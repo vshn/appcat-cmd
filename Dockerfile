@@ -10,6 +10,6 @@ COPY . ${HOME}
 RUN go build -v .
 
 # Runtime
-FROM quay.io/vshn/k8ify:latest
+FROM ghcr.io/vshn/k8ify:latest
 
 COPY --from=build appcat-cli /bin/appcat
