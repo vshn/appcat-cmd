@@ -8,10 +8,10 @@ var exoscaleApiVersion string = "exoscale.appcat.vshn.io/v1"
 
 var EXOSCALE_TYPES = map[string]func() interface{}{
 	"exoscalepostgresql": getExoscalePostgreSQLDefault,
-	"exoscaleredis":      getExoscaleRedisDefault,
-	"exoscalekafka":      getExoscaleKafkaDefault,
-	"exoscalemysql":      getExoscaleMySQLdefault,
-	"exoscaleopensearch": getExoscaleOpenSearchDefault,
+	"ExoscaleRedis":      getExoscaleRedisDefault,
+	"ExoscaleKafka":      getExoscaleKafkaDefault,
+	"ExoscaleMySQL":      getExoscaleMySQLdefault,
+	"ExoscaleOpenSearch": getExoscaleOpenSearchDefault,
 }
 
 func getExoscalePostgreSQLDefault() interface{} {

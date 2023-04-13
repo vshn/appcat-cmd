@@ -1,5 +1,0 @@
-{
-    "default": "VSHNRedis",
-    "parameters": "VSHNRedis --spec.writeConnectionSecretToRef.Name=redisSecret --spec.parameters.tls.tlsauthClients false --spec.parameters.tls.tlsenabled false --spec.parameters.service.version 9999"
-}
-
