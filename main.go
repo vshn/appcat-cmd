@@ -8,11 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/fatih/structs"
 	"github.com/sirupsen/logrus"
-	"github.com/vshn/appcat-cmd/internal/defaults"
-
-	//"k8s.io/cli-runtime/pkg/printers"
+	"github.com/vshn/appcat-cli/internal/defaults"
 	"sigs.k8s.io/yaml"
 )
 
@@ -26,8 +23,11 @@ func main() {
 }
 
 func Main(args []string, in io.Reader, out io.Writer) int {
-	plainArgs := args
-	service, err := findServiceType(plainArgs[1])
+	if len(args) < 2 {
+		return 1
+	}
+	plainArgs := args[1:]
+	service, err := findServiceType(plainArgs[0])
 	if err != nil {
 		logrus.Error(err)
 		return 1
@@ -47,7 +47,7 @@ func Main(args []string, in io.Reader, out io.Writer) int {
 		return 1
 	}
 
-	err = writeYAML(service, os.Stdout)
+	err = writeYAML(service, out)
 	if err != nil {
 		logrus.Error(err)
 		return 1
@@ -65,15 +65,19 @@ func writeYAML(service interface{}, out io.Writer) error {
 	return nil
 }
 
-// Checks and fixes if input parameters are of type "--foo=bar"
+// Checks and parses input parameters of type "--foo=bar" and "--foo 1 1 1 1"
 // returns fixed argument list
 func cleanInputArguments(arguments []string) ([]string, error) {
 	var fixedArguments []string
 	copy(fixedArguments, arguments)
 	for _, argument := range arguments {
 		if strings.HasPrefix(argument, "--") && strings.Contains(argument, "=") {
-			key, value, _ := strings.Cut(argument, "=")
-			fixedArguments = append(fixedArguments, key, value)
+			param, value, _ := strings.Cut(argument, "=")
+			if value != "" && value != " " {
+				fixedArguments = append(fixedArguments, param, value)
+			} else {
+				fixedArguments = append(fixedArguments, param)
+			}
 		} else {
 			fixedArguments = append(fixedArguments, argument)
 		}
@@ -99,7 +103,7 @@ func parseArgs(args []string) [][]string {
 	var splitParameters [][]string
 	argsLength := len(args)
 	for index, parameterNames := range args[1:] {
-		if index%2 == 0 || index+2 == argsLength {
+		if index%2 != 0 || index+2 == argsLength {
 			continue
 		}
 		parameterAndValue := strings.Split(strings.TrimPrefix(parameterNames, "--"), ".")
@@ -128,7 +132,7 @@ func setParameter(serviceType interface{}, parameterHierarchy []string, value st
 	for _, parameterName := range parameterHierarchy {
 		if !reflectedServiceType.FieldByName(parameterName).IsValid() {
 			var err error
-			parameterName, err = getStringCase(structs.Names(reflectedServiceType.Interface()), parameterName)
+			parameterName, err = getStringCase(getAllFieldNames(reflectedServiceType), parameterName)
 			if err != nil {
 				err = fmt.Errorf("%w\n%s contains field with name %s : %t",
 					err,
@@ -168,6 +172,21 @@ func setParameter(serviceType interface{}, parameterHierarchy []string, value st
 	return serviceType, nil
 }
 
+// Returns all field names of a struct
+func getAllFieldNames(field reflect.Value) []string {
+	var fieldNames []string
+	for i := 0; i < field.NumField(); i++ {
+		if field.Type().Field(i).Anonymous {
+			// Recursively finds all field names of anonymous/embedded structs
+			fieldNames = append(fieldNames, getAllFieldNames(field.Field(i))...)
+		} else {
+			fieldNames = append(fieldNames, field.Type().Field(i).Name)
+		}
+	}
+	return fieldNames
+}
+
+// Sets value of reflected field with type checking
 func setFields(field reflect.Value, value string) error {
 	if field.Kind() == reflect.String {
 		field.SetString(value)
@@ -180,6 +199,9 @@ func setFields(field reflect.Value, value string) error {
 	} else if field.Kind() == reflect.Float32 || field.Kind() == reflect.Float64 {
 		floatValue, _ := strconv.ParseFloat(value, 64)
 		field.SetFloat(floatValue)
+	} else if field.Kind() == reflect.Bool {
+		boolValue, _ := strconv.ParseBool(value)
+		field.SetBool(boolValue)
 	} else {
 		return fmt.Errorf("setFields failed with field Type: %T and value: %s", field.Type(), value)
 	}

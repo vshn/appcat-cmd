@@ -48,7 +48,7 @@ func TestSetFields(t *testing.T) {
 		UInt64Field  uint64
 		Float32Field float32
 		Float64Field float64
-		Unsupported  bool
+		Unsupported  interface{}
 	}
 
 	tests := []struct {
