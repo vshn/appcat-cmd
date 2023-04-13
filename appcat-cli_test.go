@@ -16,6 +16,7 @@ func TestCleanInput(t *testing.T) {
 		{[]string{"--foo=bar", "--baz"}, nil, true},
 		{[]string{"--baz", "--foo=bar"}, nil, true},
 		{[]string{"--foo", "--baz"}, nil, true},
+		{[]string{"--foo", "bar", "--baz="}, nil, true},
 		{[]string{"--foo=bar=baz", "--foo", "bar"}, []string{"--foo", "bar=baz", "--foo", "bar"}, false},
 		{[]string{"--foo=bar", "--baz=2", "--fooby", "bary"}, []string{"--foo", "bar", "--baz", "2", "--fooby", "bary"}, false},
 		{[]string{"--fooby", "bary", "--foo=bar", "--baz=2"}, []string{"--fooby", "bary", "--foo", "bar", "--baz", "2"}, false},
