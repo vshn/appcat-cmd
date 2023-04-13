@@ -1,0 +1,5 @@
+{
+    "default": "ExoscaleRedis",
+    "parameters": "ExoscaleRedis --spec.parameters.size=enterprise-large --spec.parameters.service.zone ch-fr-1 --spec.parameters.maintenance.timeOfDay 24:00:00"
+}
+
