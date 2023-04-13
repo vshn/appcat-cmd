@@ -1,0 +1,5 @@
+{
+    "default": "ExoscalePostgreSQL",
+    "parameters": "ExoscalePostgreSQL --spec.parameters.backup.timeOfDay=24:00:00 --spec.parameters.service.majorVersion 13 --spec.parameters.size.plan enterprise-large "
+}
+

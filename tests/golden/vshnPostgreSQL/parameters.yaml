@@ -1,0 +1,29 @@
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  creationTimestamp: null
+  generateName: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    backup:
+      retention: 9999
+      schedule: 1 1 1 1 1
+    maintenance: {}
+    network: {}
+    restore: {}
+    scheduling:
+      nodeSelector:
+        appuio.io/node-class: plus
+    service:
+      majorVersion: "15"
+      pgSettings: null
+    size:
+      cpu: 100000m
+      disk: 80Gi
+      memory: 3500Mi
+      requests:
+        cpu: 300m
+        memory: 1000Mi
+  writeConnectionSecretToRef: {}
+status: {}
