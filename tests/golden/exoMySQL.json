@@ -1,4 +1,0 @@
-{
-    "default": "ExoscaleMySQL",
-    "parameters": "ExoscaleMySQL --spec.parameters.backup.timeOfDay=24:00:00 --spec.parameters.maintenance Monday --spec.parameters.service.majorVersion 9999"
-}

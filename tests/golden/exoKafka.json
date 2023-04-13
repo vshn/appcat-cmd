@@ -1,4 +1,0 @@
-{
-    "default": "ExoscaleKafka",
-    "parameters": "ExoscaleKafka --spec.parameters.maintenance=Monday --spec.parameters.service.zone ch-fr-1 --spec.parameters.size.plan enterprise-large"
-}
