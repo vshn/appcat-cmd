@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -95,7 +94,6 @@ func testCase(t *testing.T, instanceName string, instanceFile map[string]string)
 			args := []string{"appcat-cli"}
 			seperatedParams := splitStringArgs(testParams)
 			args = append(args, seperatedParams...)
-			fmt.Printf("Running %v", args)
 			var logs bytes.Buffer
 			logrus.SetOutput(&logs)
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -23,15 +24,17 @@ func TestCleanInput(t *testing.T) {
 	}
 
 	for _, test := range cleanInputTests {
-		output, err := cleanInputArguments(test.arg)
-		hasGenError := err != nil
-		if !reflect.DeepEqual(output, test.expected) || hasGenError != test.hasError {
-			if hasGenError != test.hasError {
-				t.Errorf("Error should have been returned")
-			} else {
-				t.Errorf("%v\nOutput %q not equal to expected %q", err, output, test.expected)
+		t.Run("input: "+strings.Join(test.arg, " "), func(t *testing.T) {
+			output, err := cleanInputArguments(test.arg)
+			hasGenError := err != nil
+			if !reflect.DeepEqual(output, test.expected) || hasGenError != test.hasError {
+				if hasGenError != test.hasError {
+					t.Errorf("Error should have been returned")
+				} else {
+					t.Errorf("%v\nOutput %q not equal to expected %q", err, output, test.expected)
+				}
 			}
-		}
+		})
 	}
 }
 
