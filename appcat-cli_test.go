@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/vshn/appcat-cli/internal/util"
 )
 
 func TestCleanInput(t *testing.T) {
@@ -25,7 +27,7 @@ func TestCleanInput(t *testing.T) {
 
 	for _, test := range cleanInputTests {
 		t.Run("input: "+strings.Join(test.arg, " "), func(t *testing.T) {
-			output, err := cleanInputArguments(test.arg)
+			output, err := util.CleanInputArguments(test.arg)
 			hasGenError := err != nil
 			if !reflect.DeepEqual(output, test.expected) || hasGenError != test.hasError {
 				if hasGenError != test.hasError {
@@ -83,7 +85,7 @@ func TestSetFields(t *testing.T) {
 			field := reflect.ValueOf(&testFields).Elem().FieldByName(test.fieldName)
 
 			// Call the setFields function with the field and value
-			err := setFields(field, test.value)
+			err := util.SetFields(field, test.value)
 
 			hasErrReturn := err != nil
 			// Check that error return is correct
