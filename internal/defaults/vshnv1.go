@@ -6,12 +6,7 @@ import (
 
 var vshnApiVersion string = "vshn.appcat.vshn.io/v1"
 
-var VSHN_TYPES = map[string]func() interface{}{
-	"vshnpostgresql": getVSHNPostgreSQLDefault,
-	"vshnredis":      getVSHNRedisDefault,
-}
-
-func getVSHNPostgreSQLDefault() interface{} {
+func GetVSHNPostgreSQLDefault() interface{} {
 	var postgreSQLdefault vshnv1.VSHNPostgreSQL
 	postgreSQLdefault.APIVersion = vshnApiVersion
 	postgreSQLdefault.Kind = "VSHNPostgreSQL"
@@ -29,7 +24,7 @@ func getVSHNPostgreSQLDefault() interface{} {
 	return &postgreSQLdefault
 }
 
-func getVSHNRedisDefault() interface{} {
+func GetVSHNRedisDefault() interface{} {
 	var redisDefault vshnv1.VSHNRedis
 	redisDefault.APIVersion = vshnApiVersion
 	redisDefault.Kind = "VSHNRedis"
