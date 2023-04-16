@@ -6,7 +6,7 @@ import (
 
 var exoscaleApiVersion string = "exoscale.appcat.vshn.io/v1"
 
-func GetExoscalePostgreSQLDefault() interface{} {
+func (d *Defaults) GetExoscalePostgreSQLDefault() interface{} {
 	var postgreSQLdefault exoscalev1.ExoscalePostgreSQL
 	postgreSQLdefault.APIVersion = exoscaleApiVersion
 	postgreSQLdefault.Kind = "ExoscalePostgreSQL"
@@ -22,7 +22,7 @@ func GetExoscalePostgreSQLDefault() interface{} {
 	return &postgreSQLdefault
 }
 
-func GetExoscaleRedisDefault() interface{} {
+func (d *Defaults) GetExoscaleRedisDefault() interface{} {
 	var redisDefault exoscalev1.ExoscaleRedis
 	redisDefault.APIVersion = exoscaleApiVersion
 	redisDefault.Kind = "ExoscaleRedis"
@@ -34,7 +34,7 @@ func GetExoscaleRedisDefault() interface{} {
 	return &redisDefault
 }
 
-func GetExoscaleKafkaDefault() interface{} {
+func (d *Defaults) GetExoscaleKafkaDefault() interface{} {
 	var kafkaDefault exoscalev1.ExoscaleKafka
 	kafkaDefault.APIVersion = exoscaleApiVersion
 	kafkaDefault.Kind = "ExoscaleKafka"
@@ -49,7 +49,7 @@ func GetExoscaleKafkaDefault() interface{} {
 	return &kafkaDefault
 }
 
-func GetExoscaleMySQLdefault() interface{} {
+func (d *Defaults) GetExoscaleMySQLDefault() interface{} {
 	var mySQLdefault exoscalev1.ExoscaleMySQL
 	mySQLdefault.APIVersion = exoscaleApiVersion
 	mySQLdefault.Kind = "ExoscaleMySQL"
@@ -65,7 +65,7 @@ func GetExoscaleMySQLdefault() interface{} {
 	return &mySQLdefault
 }
 
-func GetExoscaleOpenSearchDefault() interface{} {
+func (d *Defaults) GetExoscaleOpenSearchDefault() interface{} {
 	var openSearchDefault exoscalev1.ExoscaleOpenSearch
 	openSearchDefault.APIVersion = exoscaleApiVersion
 	openSearchDefault.Kind = "ExoscaleOpenSearch"

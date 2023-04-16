@@ -6,7 +6,7 @@ import (
 
 var vshnApiVersion string = "vshn.appcat.vshn.io/v1"
 
-func GetVSHNPostgreSQLDefault() interface{} {
+func (d *Defaults) GetVSHNPostgreSQLDefault() interface{} {
 	var postgreSQLdefault vshnv1.VSHNPostgreSQL
 	postgreSQLdefault.APIVersion = vshnApiVersion
 	postgreSQLdefault.Kind = "VSHNPostgreSQL"
@@ -24,7 +24,7 @@ func GetVSHNPostgreSQLDefault() interface{} {
 	return &postgreSQLdefault
 }
 
-func GetVSHNRedisDefault() interface{} {
+func (d *Defaults) GetVSHNRedisDefault() interface{} {
 	var redisDefault vshnv1.VSHNRedis
 	redisDefault.APIVersion = vshnApiVersion
 	redisDefault.Kind = "VSHNRedis"

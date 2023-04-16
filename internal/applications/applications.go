@@ -24,15 +24,15 @@ var (
 	// In order to avoid allocations of (potentially) large types, pass in a nil pointer (`(*type)(nil)`) to `NewApp`.
 	Apps = []App{
 		// Exoscale
-		NewApp(ExoscaleApiVersion, "ExoscalePostgreSQL", (*exoscalev1.ExoscalePostgreSQLSpec)(nil), defaults.GetExoscalePostgreSQLDefault),
-		NewApp(ExoscaleApiVersion, "ExoscaleRedis", (*exoscalev1.ExoscaleRedisSpec)(nil), defaults.GetExoscaleRedisDefault),
-		NewApp(ExoscaleApiVersion, "ExoscaleKafka", (*exoscalev1.ExoscaleKafkaSpec)(nil), defaults.GetExoscaleKafkaDefault),
-		NewApp(ExoscaleApiVersion, "ExoscaleMySQL", (*exoscalev1.ExoscaleMySQLSpec)(nil), defaults.GetExoscaleMySQLdefault),
-		NewApp(ExoscaleApiVersion, "ExoscaleOpenSearch", (*exoscalev1.ExoscaleOpenSearchSpec)(nil), defaults.GetExoscaleOpenSearchDefault),
+		NewApp(ExoscaleApiVersion, "ExoscalePostgreSQL", (*exoscalev1.ExoscalePostgreSQLSpec)(nil)),
+		NewApp(ExoscaleApiVersion, "ExoscaleRedis", (*exoscalev1.ExoscaleRedisSpec)(nil)),
+		NewApp(ExoscaleApiVersion, "ExoscaleKafka", (*exoscalev1.ExoscaleKafkaSpec)(nil)),
+		NewApp(ExoscaleApiVersion, "ExoscaleMySQL", (*exoscalev1.ExoscaleMySQLSpec)(nil)),
+		NewApp(ExoscaleApiVersion, "ExoscaleOpenSearch", (*exoscalev1.ExoscaleOpenSearchSpec)(nil)),
 
 		// VSHN
-		NewApp(VshnApiVersion, "VSHNPostgreSQL", (*vshnv1.VSHNPostgreSQLSpec)(nil), defaults.GetVSHNPostgreSQLDefault),
-		NewApp(VshnApiVersion, "VSHNRedis", (*vshnv1.VSHNRedisSpec)(nil), defaults.GetVSHNRedisDefault),
+		NewApp(VshnApiVersion, "VSHNPostgreSQL", (*vshnv1.VSHNPostgreSQLSpec)(nil)),
+		NewApp(VshnApiVersion, "VSHNRedis", (*vshnv1.VSHNRedisSpec)(nil)),
 	}
 )
 
@@ -43,19 +43,33 @@ var (
 type App struct {
 	// Metadata "template" used to instantiate new objects as well as for lookup
 	metav1.TypeMeta
-	GetDefault func() interface{}
-	spec       reflect.Type
+	spec reflect.Type
 }
 
-func NewApp(apiversion, kind string, spec interface{}, getDefault func() interface{}) App {
+func NewApp(apiversion, kind string, spec interface{}) App {
 	return App{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: apiversion,
 			Kind:       kind,
 		},
-		GetDefault: getDefault,
-		spec:       reflect.TypeOf(spec).Elem(),
+		spec: reflect.TypeOf(spec).Elem(),
 	}
+}
+
+// Call the appropriate "GetDefault" function on the `defaults` package
+//
+// "GetDefault" functions are expected to be
+// * named like `Get<Kind>Default`
+// * belong to the `defaults.Defaults` struct
+func (app *App) GetDefaultSpec() interface{} {
+	fname := "Get" + app.Kind + "Default"
+	t := reflect.TypeOf((*defaults.Defaults)(nil))
+	m, ok := t.MethodByName(fname)
+	if !ok {
+		panic("no default function defaults.Defaults." + fname + " found")
+	}
+
+	return m.Func.Call([]reflect.Value{reflect.Zero(t)})[0].Interface()
 }
 
 // AppMap is a helper type
