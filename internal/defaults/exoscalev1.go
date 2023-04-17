@@ -14,6 +14,7 @@ func (d *Defaults) GetExoscalePostgreSQLDefault() *exoscalev1.ExoscalePostgreSQL
 	postgreSQLdefault.Spec.Parameters.Maintenance.DayOfWeek = "Sunday"
 	postgreSQLdefault.Spec.Parameters.Maintenance.TimeOfDay = "24:00:00"
 
+	// TODO: Clean up `generateName` and `namespace
 	postgreSQLdefault.SetGenerateName("my-postgres-example")
 	postgreSQLdefault.SetNamespace("my-namespace")
 	return &postgreSQLdefault

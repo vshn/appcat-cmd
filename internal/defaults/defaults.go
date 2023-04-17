@@ -4,7 +4,9 @@ import (
 	"reflect"
 )
 
-// Defaults is a dummy struct to hold all "GetDefault" functions.
+// Defaults is a dummy struct to hold all "GetDefault" methods.
+//
+// This is required to call them dynamically by name.
 type Defaults struct{}
 
 func (d *Defaults) GetDefaultFor(kind string) reflect.Value {

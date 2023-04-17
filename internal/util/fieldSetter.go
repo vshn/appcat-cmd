@@ -12,6 +12,7 @@ import (
 // Iterates over all parameters and tries to set them
 func DecorateType(serviceType interface{}, fieldNames [][]string) (interface{}, error) {
 	for _, v := range fieldNames {
+		// TODO: this function "re-parses" arguments again
 		_, err := setParameter(serviceType, v[:len(v)-1], v[len(v)-1])
 		if err != nil {
 			return nil, err
@@ -84,6 +85,7 @@ func getAllFieldNames(field reflect.Value) []string {
 
 // Sets value of reflected field with type checking
 func SetFields(field reflect.Value, value string) error {
+	// TODO: Handle error cases on type conversion
 	if field.Kind() == reflect.String {
 		field.SetString(value)
 	} else if field.Kind() >= reflect.Int && field.Kind() <= reflect.Int64 {

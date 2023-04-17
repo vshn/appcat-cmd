@@ -16,7 +16,7 @@ func init() {
 	logrus.SetOutput(os.Stderr)
 }
 
-func usage(cmd string, apps applications.AppMap) string {
+func printUsage(cmd string, apps applications.AppMap) {
 	out := fmt.Sprintf(`usage: %s <type> [options]
 
 Generate AppCat YAML manifests
@@ -33,7 +33,7 @@ Known types:
 		out += fmt.Sprintf(format, name, app.Kind, app.APIVersion)
 	}
 
-	return out
+	fmt.Fprintln(os.Stderr, out)
 }
 
 func main() {
@@ -42,39 +42,56 @@ func main() {
 	os.Exit(code)
 }
 
+// Main function
+//
+// Separated from `main` for testing purposes.
+//
+// # Errors
+//
+// If during executions, error occur due to user input errors, an appropriate
+// error message is logged, and a non-zero exit code is returned.
+//
+// # Panics
+//
+// If during execution, an unrecoverable error occurs (usually due to a bug),
+// an error message is logged and the program will panic.
 func Main(apps applications.AppMap, args []string, in io.Reader, out io.Writer) int {
 	if len(args) < 2 {
-		fmt.Println(usage(args[0], apps))
+		printUsage(args[0], apps)
 		return 1
 	}
 	plainArgs := args[1:]
 
+	fmt.Printf("%#v\n", args)
+
 	parsedType := util.NormalizeName(plainArgs[0])
 	app, ok := apps[parsedType]
 	if !ok {
-		logrus.Errorf("service Type %s is not supported", parsedType)
-		usage(args[0], apps)
-		os.Exit(1)
+		logrus.Errorf("service type '%s' is not supported", parsedType)
+		printUsage(args[0], apps)
+		return 1
 	}
 
 	service := app.GetDefault()
 	plainArgs, err := util.CleanInputArguments(plainArgs)
 	if err != nil {
-		logrus.Error(err)
+		logrus.Errorf("Invalid arguments: %s", err)
 		return 1
 	}
 
 	parameters := util.ParseArgs(plainArgs)
 
+	// TODO: Setting an invalid value just ignores it instead of erroring
+	// example: `go run . VSHNPostgreSQL --spec.parameters.backup.retention asdf``
 	_, err = util.DecorateType(service, parameters)
 	if err != nil {
-		logrus.Error(err)
+		logrus.Errorf("failed setting parameters: %s", err)
 		return 1
 	}
 
 	err = writeYAML(service, out)
 	if err != nil {
-		logrus.Error(err)
+		logrus.Panicf("failed writing YAML: %s", err)
 		return 1
 	}
 
@@ -83,9 +100,14 @@ func Main(apps applications.AppMap, args []string, in io.Reader, out io.Writer) 
 
 func writeYAML(service interface{}, out io.Writer) error {
 	outYaml, err := yaml.Marshal(service)
-	out.Write(outYaml)
 	if err != nil {
 		return err
 	}
+
+	_, err = out.Write(outYaml)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

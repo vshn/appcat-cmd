@@ -13,6 +13,7 @@ func CleanInputArguments(arguments []string) ([]string, error) {
 	for _, argument := range arguments {
 		if strings.HasPrefix(argument, "--") && strings.Contains(argument, "=") {
 			param, value, _ := strings.Cut(argument, "=")
+			// TODO: this misses values consisting of only (more than one) spaces
 			if value != "" && value != " " {
 				fixedArguments = append(fixedArguments, param, value)
 			} else {
@@ -26,12 +27,12 @@ func CleanInputArguments(arguments []string) ([]string, error) {
 	for index, argument := range fixedArguments[:len(fixedArguments)-1] {
 		if strings.HasPrefix(argument, "--") {
 			if strings.HasPrefix(fixedArguments[index+1], "--") {
-				return nil, fmt.Errorf("parameter %s is missing a value", argument)
+				return nil, fmt.Errorf("parameter '%s' is missing a value", argument)
 			}
 		}
 	}
 	if strings.HasPrefix(fixedArguments[len(fixedArguments)-1], "--") {
-		return nil, fmt.Errorf("parameter %s is missing a value", fixedArguments[len(fixedArguments)-1])
+		return nil, fmt.Errorf("parameter '%s' is missing a value", fixedArguments[len(fixedArguments)-1])
 	}
 	return fixedArguments, nil
 }
