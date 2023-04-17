@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"sigs.k8s.io/yaml"
@@ -56,38 +58,30 @@ func main() {
 // If during execution, an unrecoverable error occurs (usually due to a bug),
 // an error message is logged and the program will panic.
 func Main(apps applications.AppMap, args []string, in io.Reader, out io.Writer) int {
-	if len(args) < 2 {
-		printUsage(args[0], apps)
-		return 1
-	}
-	plainArgs := args[1:]
-
 	fmt.Printf("%#v\n", args)
 
-	parsedType := util.NormalizeName(plainArgs[0])
+	cmd := args[0]
+	if len(args) != 3 {
+		printUsage(cmd, apps)
+		return 1
+	}
+	parsedType := args[1]
+	patch := args[2]
+
+	parsedType = util.NormalizeName(parsedType)
 	app, ok := apps[parsedType]
 	if !ok {
 		logrus.Errorf("service type '%s' is not supported", parsedType)
-		printUsage(args[0], apps)
+		printUsage(cmd, apps)
 		return 1
 	}
 
 	service := app.GetDefault()
-	plainArgs, err := util.CleanInputArguments(plainArgs)
-	if err != nil {
-		logrus.Errorf("Invalid arguments: %s", err)
-		return 1
+	if err := json.NewDecoder(strings.NewReader(patch)).Decode(&service); err != nil {
+		logrus.Errorf("failed reading input: %s", err)
 	}
 
-	parameters := util.ParseArgs(plainArgs)
-
-	_, err = util.DecorateType(service, parameters)
-	if err != nil {
-		logrus.Errorf("failed setting parameters: %s", err)
-		return 1
-	}
-
-	err = writeYAML(service, out)
+	err := writeYAML(service, out)
 	if err != nil {
 		logrus.Panicf("failed writing YAML: %s", err)
 		return 1
