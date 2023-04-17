@@ -61,15 +61,12 @@ func NewApp(apiversion, kind string, spec interface{}) App {
 // "GetDefault" functions are expected to be
 // * named like `Get<Kind>Default`
 // * belong to the `defaults.Defaults` struct
-func (app *App) GetDefaultSpec() interface{} {
-	fname := "Get" + app.Kind + "Default"
-	t := reflect.TypeOf((*defaults.Defaults)(nil))
-	m, ok := t.MethodByName(fname)
-	if !ok {
-		panic("no default function defaults.Defaults." + fname + " found")
-	}
+func (app *App) GetDefault() interface{} {
+	v := (&defaults.Defaults{}).GetDefaultFor(app.Kind)
 
-	return m.Func.Call([]reflect.Value{reflect.Zero(t)})[0].Interface()
+	v.Elem().FieldByName("TypeMeta").Set(reflect.ValueOf(app.TypeMeta))
+
+	return v.Interface()
 }
 
 // AppMap is a helper type

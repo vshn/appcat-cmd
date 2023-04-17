@@ -57,7 +57,7 @@ func Main(apps applications.AppMap, args []string, in io.Reader, out io.Writer) 
 		os.Exit(1)
 	}
 
-	service := app.GetDefaultSpec()
+	service := app.GetDefault()
 	plainArgs, err := util.CleanInputArguments(plainArgs)
 	if err != nil {
 		logrus.Error(err)

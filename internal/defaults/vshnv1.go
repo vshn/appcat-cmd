@@ -4,12 +4,9 @@ import (
 	vshnv1 "github.com/vshn/component-appcat/apis/vshn/v1"
 )
 
-var vshnApiVersion string = "vshn.appcat.vshn.io/v1"
-
-func (d *Defaults) GetVSHNPostgreSQLDefault() interface{} {
+func (d *Defaults) GetVSHNPostgreSQLDefault() *vshnv1.VSHNPostgreSQL {
 	var postgreSQLdefault vshnv1.VSHNPostgreSQL
-	postgreSQLdefault.APIVersion = vshnApiVersion
-	postgreSQLdefault.Kind = "VSHNPostgreSQL"
+
 	postgreSQLdefault.Spec.Parameters.Service.MajorVersion = "15"
 	postgreSQLdefault.Spec.Parameters.Size.CPU = "600m"
 	postgreSQLdefault.Spec.Parameters.Size.Disk = "80Gi"
@@ -19,15 +16,15 @@ func (d *Defaults) GetVSHNPostgreSQLDefault() interface{} {
 	postgreSQLdefault.Spec.Parameters.Backup.Schedule = "30 23 * * *"
 	postgreSQLdefault.Spec.Parameters.Backup.Retention = 12
 	postgreSQLdefault.Spec.Parameters.Scheduling.NodeSelector = map[string]string{"appuio.io/node-class": "plus"}
+
 	postgreSQLdefault.SetGenerateName("pgsql-app1-prod")
 	postgreSQLdefault.SetNamespace("prod-app")
 	return &postgreSQLdefault
 }
 
-func (d *Defaults) GetVSHNRedisDefault() interface{} {
+func (d *Defaults) GetVSHNRedisDefault() *vshnv1.VSHNRedis {
 	var redisDefault vshnv1.VSHNRedis
-	redisDefault.APIVersion = vshnApiVersion
-	redisDefault.Kind = "VSHNRedis"
+
 	redisDefault.Spec.Parameters.TLS.TLSAuthClients = true
 	redisDefault.Spec.Parameters.TLS.TLSEnabled = true
 	redisDefault.Spec.Parameters.Service.Version = "7.0"
@@ -37,6 +34,7 @@ func (d *Defaults) GetVSHNRedisDefault() interface{} {
 	redisDefault.Spec.Parameters.Size.CPURequests = "500m"
 	redisDefault.Spec.Parameters.Size.MemoryRequests = "500Mi"
 	redisDefault.Spec.Parameters.Size.MemoryLimits = "1Gi"
+
 	redisDefault.SetGenerateName("redis-app1-prod")
 	redisDefault.SetNamespace("prod-app")
 	return &redisDefault
