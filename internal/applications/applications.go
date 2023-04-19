@@ -6,8 +6,6 @@ import (
 
 	"github.com/vshn/appcat-cli/internal/defaults"
 	"github.com/vshn/appcat-cli/internal/util"
-	exoscalev1 "github.com/vshn/component-appcat/apis/exoscale/v1"
-	vshnv1 "github.com/vshn/component-appcat/apis/vshn/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -24,15 +22,15 @@ var (
 	// In order to avoid allocations of (potentially) large types, pass in a nil pointer (`(*type)(nil)`) to `NewApp`.
 	Apps = []App{
 		// Exoscale
-		NewApp(ExoscaleApiVersion, "ExoscalePostgreSQL", (*exoscalev1.ExoscalePostgreSQLSpec)(nil)),
-		NewApp(ExoscaleApiVersion, "ExoscaleRedis", (*exoscalev1.ExoscaleRedisSpec)(nil)),
-		NewApp(ExoscaleApiVersion, "ExoscaleKafka", (*exoscalev1.ExoscaleKafkaSpec)(nil)),
-		NewApp(ExoscaleApiVersion, "ExoscaleMySQL", (*exoscalev1.ExoscaleMySQLSpec)(nil)),
-		NewApp(ExoscaleApiVersion, "ExoscaleOpenSearch", (*exoscalev1.ExoscaleOpenSearchSpec)(nil)),
+		NewApp(ExoscaleApiVersion, "ExoscalePostgreSQL"),
+		NewApp(ExoscaleApiVersion, "ExoscaleRedis"),
+		NewApp(ExoscaleApiVersion, "ExoscaleKafka"),
+		NewApp(ExoscaleApiVersion, "ExoscaleMySQL"),
+		NewApp(ExoscaleApiVersion, "ExoscaleOpenSearch"),
 
 		// VSHN
-		NewApp(VshnApiVersion, "VSHNPostgreSQL", (*vshnv1.VSHNPostgreSQLSpec)(nil)),
-		NewApp(VshnApiVersion, "VSHNRedis", (*vshnv1.VSHNRedisSpec)(nil)),
+		NewApp(VshnApiVersion, "VSHNPostgreSQL"),
+		NewApp(VshnApiVersion, "VSHNRedis"),
 	}
 )
 
@@ -43,16 +41,14 @@ var (
 type App struct {
 	// Metadata "template" used to instantiate new objects as well as for lookup
 	metav1.TypeMeta
-	spec reflect.Type
 }
 
-func NewApp(apiversion, kind string, spec interface{}) App {
+func NewApp(apiversion, kind string) App {
 	return App{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: apiversion,
 			Kind:       kind,
 		},
-		spec: reflect.TypeOf(spec).Elem(),
 	}
 }
 
