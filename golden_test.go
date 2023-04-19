@@ -14,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/sirupsen/logrus"
+	"github.com/vshn/appcat-cli/internal/applications"
 )
 
 const (
@@ -82,6 +83,7 @@ func splitStringArgs(args string) []string {
 }
 
 func testCase(t *testing.T, instanceName string, instanceFile map[string]string) {
+	apps := applications.MakeAppMap()
 	old, err := os.Getwd()
 	check(err, "determining current working directory")
 	dirName := ext.ReplaceAllString(instanceName, "")
@@ -99,7 +101,7 @@ func testCase(t *testing.T, instanceName string, instanceFile map[string]string)
 
 			outFile, err := os.Create(testName + ".yaml")
 			check(err, "Could not create outFile for test")
-			if c := Main(args, os.Stdin, outFile); c != 0 {
+			if c := Main(apps, args, outFile); c != 0 {
 				t.Errorf("appcat-cli exited with code %v while compiling with args '%v' \r\n %s", c, args, logs.String())
 			}
 		})

@@ -1,51 +1,97 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 
 	"github.com/sirupsen/logrus"
-	"github.com/vshn/appcat-cli/internal/defaults"
-	"github.com/vshn/appcat-cli/internal/util"
 	"sigs.k8s.io/yaml"
+
+	"github.com/vshn/appcat-cli/internal/applications"
+	"github.com/vshn/appcat-cli/internal/util"
 )
 
 func init() {
 	logrus.SetOutput(os.Stderr)
 }
 
+func printUsage(cmd string, apps applications.AppMap) {
+	out := fmt.Sprintf(`usage: %s <type> [options]
+
+Generate AppCat YAML manifests
+
+Known types:
+`, cmd)
+
+	names := apps.Names()
+	longest := util.Longest(names)
+	format := fmt.Sprintf("  %%-%ds (%%s.%%s)\n", longest+2)
+
+	for _, name := range names {
+		app := apps[name]
+		out += fmt.Sprintf(format, name, app.Kind, app.APIVersion)
+	}
+
+	fmt.Fprintln(os.Stderr, out)
+}
+
 func main() {
-	code := Main(os.Args, os.Stdin, os.Stdout)
+	apps := applications.MakeAppMap()
+	code := Main(apps, os.Args, os.Stdout)
 	os.Exit(code)
 }
 
-func Main(args []string, in io.Reader, out io.Writer) int {
+// Main function
+//
+// Separated from `main` for testing purposes.
+//
+// # Errors
+//
+// If during executions, error occur due to user input errors, an appropriate
+// error message is logged, and a non-zero exit code is returned.
+//
+// # Panics
+//
+// If during execution, an unrecoverable error occurs (usually due to a bug),
+// an error message is logged and the program will panic.
+func Main(apps applications.AppMap, args []string, out io.Writer) int {
 	if len(args) < 2 {
+		printUsage(args[0], apps)
 		return 1
 	}
 	plainArgs := args[1:]
-	service, err := defaults.FindServiceType(plainArgs[0])
-	if err != nil {
-		logrus.Error(err)
+
+	fmt.Printf("%#v\n", args)
+
+	parsedType := util.NormalizeName(plainArgs[0])
+	app, ok := apps[parsedType]
+	if !ok {
+		logrus.Errorf("service type '%s' is not supported", parsedType)
+		printUsage(args[0], apps)
 		return 1
 	}
-	plainArgs, err = util.CleanInputArguments(plainArgs)
+
+	service := app.GetDefault()
+	plainArgs, err := util.CleanInputArguments(plainArgs)
 	if err != nil {
-		logrus.Error(err)
+		logrus.Errorf("Invalid arguments: %s", err)
 		return 1
 	}
 
 	parameters := util.ParseArgs(plainArgs)
 
+	// TODO: Setting an invalid value just ignores it instead of erroring
+	// example: `go run . VSHNPostgreSQL --spec.parameters.backup.retention asdf``
 	_, err = util.DecorateType(service, parameters)
 	if err != nil {
-		logrus.Error(err)
+		logrus.Errorf("failed setting parameters: %s", err)
 		return 1
 	}
 
 	err = writeYAML(service, out)
 	if err != nil {
-		logrus.Error(err)
+		logrus.Panicf("failed writing YAML: %s", err)
 		return 1
 	}
 
@@ -54,9 +100,14 @@ func Main(args []string, in io.Reader, out io.Writer) int {
 
 func writeYAML(service interface{}, out io.Writer) error {
 	outYaml, err := yaml.Marshal(service)
-	out.Write(outYaml)
 	if err != nil {
 		return err
 	}
+
+	_, err = out.Write(outYaml)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
