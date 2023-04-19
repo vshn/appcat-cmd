@@ -38,7 +38,7 @@ Known types:
 
 func main() {
 	apps := applications.MakeAppMap()
-	code := Main(apps, os.Args, os.Stdin, os.Stdout)
+	code := Main(apps, os.Args, os.Stdout)
 	os.Exit(code)
 }
 
@@ -55,7 +55,7 @@ func main() {
 //
 // If during execution, an unrecoverable error occurs (usually due to a bug),
 // an error message is logged and the program will panic.
-func Main(apps applications.AppMap, args []string, in io.Reader, out io.Writer) int {
+func Main(apps applications.AppMap, args []string, out io.Writer) int {
 	if len(args) < 2 {
 		printUsage(args[0], apps)
 		return 1

@@ -101,7 +101,7 @@ func testCase(t *testing.T, instanceName string, instanceFile map[string]string)
 
 			outFile, err := os.Create(testName + ".yaml")
 			check(err, "Could not create outFile for test")
-			if c := Main(apps, args, os.Stdin, outFile); c != 0 {
+			if c := Main(apps, args, outFile); c != 0 {
 				t.Errorf("appcat-cli exited with code %v while compiling with args '%v' \r\n %s", c, args, logs.String())
 			}
 		})
