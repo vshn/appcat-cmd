@@ -86,22 +86,22 @@ func TestSetFields(t *testing.T) {
 
 	tests := []struct {
 		fieldName string
-		value     string
+		value     util.Input
 		expected  interface{}
 		hasErr    bool
 	}{
-		{"StringField", "foo", "foo", false},
-		{"Int8Field", "042", int64(42), false},
-		{"Int16Field", "042", int64(42), false},
-		{"Int32Field", "042", int64(42), false},
-		{"Int64Field", "042", int64(42), false},
-		{"UInt8Field", "0123", uint64(123), false},
-		{"UInt16Field", "0123", uint64(123), false},
-		{"UInt32Field", "0123", uint64(123), false},
-		{"UInt64Field", "0123", uint64(123), false},
-		{"Float32Field", "03.14", float64(3.14), false},
-		{"Float64Field", "03.14", float64(3.14), false},
-		{"Unsupported", "bar", nil, true},
+		{"StringField", util.Input{ParameterHierarchy: []string{}, Value: "foo", JsonValue: nil, Unset: false, IsJson: false}, "foo", false},
+		{"Int8Field", util.Input{ParameterHierarchy: []string{}, Value: "042", JsonValue: nil, Unset: false, IsJson: false}, int64(42), false},
+		{"Int16Field", util.Input{ParameterHierarchy: []string{}, Value: "042", JsonValue: nil, Unset: false, IsJson: false}, int64(42), false},
+		{"Int32Field", util.Input{ParameterHierarchy: []string{}, Value: "042", JsonValue: nil, Unset: false, IsJson: false}, int64(42), false},
+		{"Int64Field", util.Input{ParameterHierarchy: []string{}, Value: "042", JsonValue: nil, Unset: false, IsJson: false}, int64(42), false},
+		{"UInt8Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", JsonValue: nil, Unset: false, IsJson: false}, uint64(123), false},
+		{"UInt16Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", JsonValue: nil, Unset: false, IsJson: false}, uint64(123), false},
+		{"UInt32Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", JsonValue: nil, Unset: false, IsJson: false}, uint64(123), false},
+		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", JsonValue: nil, Unset: false, IsJson: false}, uint64(123), false},
+		{"Float32Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", JsonValue: nil, Unset: false, IsJson: false}, float64(3.14), false},
+		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", JsonValue: nil, Unset: false, IsJson: false}, float64(3.14), false},
+		{"Unsupported", util.Input{ParameterHierarchy: []string{}, Value: "bar", JsonValue: nil, Unset: false, IsJson: false}, nil, true},
 	}
 
 	for _, test := range tests {
@@ -125,7 +125,7 @@ func TestSetFields(t *testing.T) {
 				actual := field.Interface()
 				expected := reflect.ValueOf(test.expected).Convert(field.Type()).Interface()
 				if !reflect.DeepEqual(actual, expected) {
-					t.Errorf("setFields(%s, %q) = %v; want %v", test.fieldName, test.value, actual, expected)
+					t.Errorf("setFields(%s, %q) = %v; want %v", test.fieldName, test.value.Value, actual, expected)
 				}
 			} else {
 				if !test.hasErr {
