@@ -9,7 +9,7 @@ spec:
     backup:
       timeOfDay: "24:00:00"
     maintenance:
-      dayOfWeek: Sunday
+      dayOfWeek: Monday
       timeOfDay: "24:00:00"
     network: {}
     service:

@@ -13,6 +13,7 @@ spec:
     service:
       redisSettings: null
       zone: ch-fr-1
-    size: {}
+    size:
+      plan: enterprise-large
   writeConnectionSecretToRef: {}
 status: {}
