@@ -8,7 +8,7 @@ import (
 	"github.com/vshn/appcat-cli/internal/util"
 )
 
-func TestCleanInput(t *testing.T) {
+func TestFormatInput(t *testing.T) {
 	type cleanInputTest struct {
 		arg      []string
 		expected []string
@@ -16,10 +16,6 @@ func TestCleanInput(t *testing.T) {
 	}
 
 	var cleanInputTests = []cleanInputTest{
-		{[]string{"--foo=bar", "--baz"}, nil, true},
-		{[]string{"--baz", "--foo=bar"}, nil, true},
-		{[]string{"--foo", "--baz"}, nil, true},
-		{[]string{"--foo", "bar", "--baz="}, nil, true},
 		{[]string{"--foo=bar=baz", "--foo", "bar"}, []string{"--foo", "bar=baz", "--foo", "bar"}, false},
 		{[]string{"--foo=bar", "--baz=2", "--fooby", "bary"}, []string{"--foo", "bar", "--baz", "2", "--fooby", "bary"}, false},
 		{[]string{"--fooby", "bary", "--foo=bar", "--baz=2"}, []string{"--fooby", "bary", "--foo", "bar", "--baz", "2"}, false},
@@ -27,14 +23,46 @@ func TestCleanInput(t *testing.T) {
 
 	for _, test := range cleanInputTests {
 		t.Run("input: "+strings.Join(test.arg, " "), func(t *testing.T) {
-			output, err := util.CleanInputArguments(test.arg)
-			hasGenError := err != nil
-			if !reflect.DeepEqual(output, test.expected) || hasGenError != test.hasError {
-				if hasGenError != test.hasError {
-					t.Errorf("Error should have been returned")
-				} else {
-					t.Errorf("%v\nOutput %q not equal to expected %q", err, output, test.expected)
-				}
+			output := util.FormatInputArguments(test.arg)
+			if !reflect.DeepEqual(output, test.expected) {
+				t.Errorf("Output %q not equal to expected %q", output, test.expected)
+			}
+		})
+	}
+}
+
+func TestCheckForMissingValues(t *testing.T) {
+	type cleanInputTest struct {
+		arg      []string
+		hasError bool
+	}
+
+	var cleanInputTests = []cleanInputTest{
+		// missing value
+		{[]string{"--foo", "--bar"}, true},
+		{[]string{"--foo", "--bar-"}, true},
+		{[]string{"--foo-", "--baz"}, true},
+		// missing key
+		{[]string{"foo-", "--baz", "bar"}, true},
+		{[]string{"--foo", "foobar", "bar", "--foo"}, true},
+		{[]string{"--foo,", "bar", "--barry-", "fooby"}, true},
+		{[]string{"--foo", "foobar", "--foo-", "bar"}, true},
+		// valid input
+		{[]string{"--foo-"}, false},
+		{[]string{"--foo", "bar"}, false},
+		{[]string{"--foo-", "--baz", "bar", "--foobar-"}, false},
+		{[]string{"--foo", "foobar", "--bar", "foo"}, false},
+		{[]string{"--foo", "bar", "--baz-", "--barry-", "--fooby", "bary"}, false},
+	}
+
+	for _, test := range cleanInputTests {
+		t.Run("input: "+strings.Join(test.arg, " "), func(t *testing.T) {
+			output := util.CheckForMissingValues(test.arg)
+			hasGeneratedError := output != nil
+			if hasGeneratedError == false && test.hasError == true {
+				t.Errorf("%v\nError should have been thrown for input %s", output, test.arg)
+			} else if hasGeneratedError && test.hasError == false {
+				t.Errorf("%v\nError should not have been thrown for input %s", output, test.arg)
 			}
 		})
 	}
