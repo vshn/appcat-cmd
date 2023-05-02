@@ -1,6 +1,7 @@
 package util
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -32,7 +33,7 @@ func setParameter(serviceType interface{}, input Input) (interface{}, error) {
 
 			parameterName, err = getStringCase(getAllFieldNames(reflectedServiceType), parameterName)
 			if err != nil {
-				err = fmt.Errorf("%w\n%s contains field with name %s : %t",
+				err = fmt.Errorf("%w %s contains field with name %s : %t",
 					err,
 					reflectedServiceType.Type().Name(),
 					parameterName,
@@ -48,17 +49,17 @@ func setParameter(serviceType interface{}, input Input) (interface{}, error) {
 	err = SetFields(reflectedServiceType, input)
 	if err != nil {
 		err = fmt.Errorf(
-			"%w\ncannot assign value %s to field %s with field Type %s",
+			"%w cannot assign value %s to field %s with field Type %s",
 			err,
 			input.Value,
 			strings.Join(input.ParameterHierarchy, HIERARCHY_DELIMITER),
-			reflectedServiceType.FieldByName(parameterName).Kind(),
+			reflectedServiceType.Kind(),
 		)
-		err = fmt.Errorf("%w\n%s contains field with name %s : %t",
+		err = fmt.Errorf("%w %s contains field with name %s : %t",
 			err,
 			reflectedServiceType.Type().Name(),
 			parameterName,
-			reflectedServiceType.FieldByName(parameterName).IsValid(),
+			reflectedServiceType.IsValid(),
 		)
 		return nil, err
 	}
@@ -70,11 +71,22 @@ func setParameter(serviceType interface{}, input Input) (interface{}, error) {
 
 // Sets value of reflected field with type checking
 func SetFields(field reflect.Value, input Input) error {
-	// TODO: Handle error cases on type conversion
 	if input.Unset {
 		field.Set(reflect.Zero(field.Type()))
-	} else if field.Kind() == reflect.Map && input.IsJson {
-		field.Set(reflect.ValueOf(input.JsonValue))
+	} else if input.IsJson {
+		field.Set(reflect.Zero(field.Type()))
+		var jsonInput map[string]interface{}
+		//err := json.Unmarshal([]byte(input.Value), field.Addr().Interface())
+		err := json.Unmarshal([]byte(input.Value), &jsonInput)
+		if err != nil {
+			return fmt.Errorf("Json value could not be Unmarshalled: %s", err)
+		}
+		for key, value := range jsonInput {
+			err := SetFields(field.FieldByName(key), Input{Value: fmt.Sprintf("%v", value)})
+			if err != nil {
+				return err
+			}
+		}
 	} else if field.Kind() == reflect.String {
 		field.SetString(input.Value)
 	} else if field.Kind() >= reflect.Int && field.Kind() <= reflect.Int64 {
@@ -102,7 +114,7 @@ func SetFields(field reflect.Value, input Input) error {
 		}
 		field.SetBool(boolValue)
 	} else {
-		return fmt.Errorf("setFields failed with field Type: %T and value: %s", field.Type(), input.Value)
+		return fmt.Errorf("setFields failed with field Type: %T and value: %s", reflect.TypeOf(field), input.Value)
 	}
 	return nil
 }
