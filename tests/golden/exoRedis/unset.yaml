@@ -2,8 +2,7 @@ apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleRedis
 metadata:
   creationTimestamp: null
-  generateName: redis-app1-prod
-  namespace: prod-app
+  name: ExoscaleRedis
 spec:
   parameters:
     maintenance:

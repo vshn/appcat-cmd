@@ -2,8 +2,7 @@ apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNPostgreSQL
 metadata:
   creationTimestamp: null
-  generateName: pgsql-app1-prod
-  namespace: prod-app
+  name: VSHNPostgreSQL
 spec:
   parameters:
     backup:

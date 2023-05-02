@@ -2,8 +2,7 @@ apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleKafka
 metadata:
   creationTimestamp: null
-  generateName: 'my-kafka-example '
-  namespace: my-namespace
+  name: ExoscaleKafka
 spec:
   parameters:
     maintenance:

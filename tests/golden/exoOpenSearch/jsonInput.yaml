@@ -2,8 +2,7 @@ apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleOpenSearch
 metadata:
   creationTimestamp: null
-  generateName: my-openSearch-example
-  namespace: my-namespace
+  name: ExoscaleOpenSearch
 spec:
   parameters:
     backup:
