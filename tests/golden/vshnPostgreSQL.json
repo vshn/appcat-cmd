@@ -1,5 +1,7 @@
 {
     "default": "VSHNPostgreSQL",
-    "parameters": "VSHNPostgreSQL --spec.parameters.backup.retention=9999 --spec.parameters.backup.schedule \"1 1 1 1 1\" --spec.parameters.size.CPU 100000m"
+    "parameters": "VSHNPostgreSQL --spec.parameters.backup.retention=9999 --spec.parameters.backup.schedule \"1 1 1 1 1\" --spec.parameters.size.CPU 100000m",
+    "unset": "VSHNPostgreSQL --spec.parameters.size.disk- --spec.parameters.service- --spec.parameters.scheduling.nodeSelector-",
+    "jsonInput": "VSHNPostgreSQL --spec.parameters.size={\"cpu\":\"99999m\",\"Memory\":\"9999Gi\",\"disk\":\"9999Gi\",\"Requests\":{\"Memory\":\"9999Gi\"}} --spec.parameters.scheduling.nodeSelector {\"appuio.io/node-class\":\"testing\"}"
 }
 

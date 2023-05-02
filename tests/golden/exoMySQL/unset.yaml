@@ -1,0 +1,18 @@
+apiVersion: exoscale.appcat.vshn.io/v1
+kind: ExoscaleMySQL
+metadata:
+  creationTimestamp: null
+  generateName: my-mysql-example
+  namespace: my-namespace
+spec:
+  parameters:
+    backup:
+      timeOfDay: "12:00:00"
+    maintenance:
+      timeOfDay: "24:00:00"
+    network: {}
+    service:
+      mysqlSettings: null
+    size: {}
+  writeConnectionSecretToRef: {}
+status: {}

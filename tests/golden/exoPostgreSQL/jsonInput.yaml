@@ -1,0 +1,21 @@
+apiVersion: exoscale.appcat.vshn.io/v1
+kind: ExoscalePostgreSQL
+metadata:
+  creationTimestamp: null
+  generateName: my-postgres-example
+  namespace: my-namespace
+spec:
+  parameters:
+    backup:
+      timeOfDay: "12:00:00"
+    maintenance:
+      dayOfWeek: Monday
+      timeOfDay: "00:00:00"
+    network: {}
+    service:
+      pgSettings: null
+      zone: ch-fr-99
+    size:
+      plan: 'hobbyist-2 '
+  writeConnectionSecretToRef: {}
+status: {}

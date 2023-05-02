@@ -1,0 +1,19 @@
+apiVersion: exoscale.appcat.vshn.io/v1
+kind: ExoscaleKafka
+metadata:
+  creationTimestamp: null
+  generateName: 'my-kafka-example '
+  namespace: my-namespace
+spec:
+  parameters:
+    maintenance:
+      dayOfWeek: Monday
+      timeOfDay: "00:00:00"
+    network: {}
+    service:
+      kafkaSettings: null
+      zone: ch-fr-99
+    size:
+      plan: 'startup-2 '
+  writeConnectionSecretToRef: {}
+status: {}
