@@ -9,7 +9,6 @@ import (
 type Input struct {
 	ParameterHierarchy []string
 	Value              string
-	JsonValue          map[string]interface{}
 	Unset              bool
 	IsJson             bool
 }
@@ -25,21 +24,18 @@ const (
 // returns a list of Input structs and an error if an argument is invalid
 func ParseArgs(args []string) ([]Input, error) {
 	cleanArgs := FormatInputArguments(args)
-
 	err := CheckForMissingValues(cleanArgs)
 	if err != nil {
-		return nil, fmt.Errorf("Input is missing a value: %s", err)
+		return nil, fmt.Errorf("Input is missing a value: %v", err)
 	}
-	inputList, err := mapArgsToInput(cleanArgs)
-	if err != nil {
-		return nil, fmt.Errorf("Json value could not be Unmarshalled: %s", err)
-	}
+	inputList := mapArgsToInput(cleanArgs)
+
 	return inputList, nil
 }
 
 // Takes the input arguments and outputs them as separate Input structs
 // returns error if a value argument in json format is not valid
-func mapArgsToInput(args []string) ([]Input, error) {
+func mapArgsToInput(args []string) []Input {
 	var inputList []Input
 	input := Input{}
 	for _, arg := range args {
@@ -52,11 +48,8 @@ func mapArgsToInput(args []string) ([]Input, error) {
 			input.Unset = true
 			inputList = append(inputList, input)
 			input = Input{}
-		} else if isJsonMap(arg) {
-			err := json.NewDecoder(strings.NewReader(arg)).Decode(&input.JsonValue)
-			if err != nil {
-				return nil, err
-			}
+		} else if isJson(arg) {
+			input.Value = arg
 			input.IsJson = true
 			inputList = append(inputList, input)
 			input = Input{}
@@ -67,7 +60,7 @@ func mapArgsToInput(args []string) ([]Input, error) {
 		}
 
 	}
-	return inputList, nil
+	return inputList
 }
 
 // Parses raw cli input parameters and returns a fixed argument list
@@ -93,6 +86,12 @@ func FormatInputArguments(arguments []string) []string {
 			}
 
 			fixedArguments = append(fixedArguments, argument)
+		} else if isParamToUnset(argument) {
+			if value != "" {
+				fixedArguments = append(fixedArguments, value)
+				value = ""
+			}
+			fixedArguments = append(fixedArguments, argument)
 		} else {
 			value += argument
 		}
@@ -107,22 +106,21 @@ func FormatInputArguments(arguments []string) []string {
 // Takes a list of strings and checks if every parameter has a value
 // returns an error if a parameter is missing a value
 func CheckForMissingValues(arguments []string) error {
-	lastIndex := len(arguments) - 1
-	lastArgument := arguments[lastIndex]
+	lastArgument := arguments[len(arguments)-1]
 	if isParameter(lastArgument) && !isParamToUnset(lastArgument) {
 		return fmt.Errorf("parameter '%s' is missing a value", lastArgument)
 	} else if isValue(arguments[0]) {
 		return fmt.Errorf("parameter '%s' is missing a value", arguments[0])
 	}
 	var prevArgument string
-	for index, argument := range arguments[1:] {
+	for i, argument := range arguments[1:] {
 		if isValue(argument) {
-			prevArgument = arguments[index]
+			prevArgument = arguments[i]
 			if !isParameter(prevArgument) {
 				return fmt.Errorf("value '%s' is missing a key", prevArgument)
 			}
 		} else if isParamToUnset(argument) {
-			prevArgument = arguments[index]
+			prevArgument = arguments[i]
 			if isParameter(prevArgument) {
 				return fmt.Errorf("parameter '%s' is missing a value", prevArgument)
 			}
@@ -133,7 +131,7 @@ func CheckForMissingValues(arguments []string) error {
 }
 
 // Checks if the argument is a json map and returns if it is valid json
-func isJsonMap(arg string) bool {
+func isJson(arg string) bool {
 	if strings.HasPrefix(arg, "{") && strings.HasSuffix(arg, "}") {
 		return json.Valid([]byte(arg))
 	}
