@@ -82,6 +82,7 @@ func TestSetFields(t *testing.T) {
 		UInt64Field  uint64
 		Float32Field float32
 		Float64Field float64
+		BoolField    bool
 		Unsupported  interface{}
 	}
 
@@ -102,7 +103,13 @@ func TestSetFields(t *testing.T) {
 		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false, IsJson: false}, uint64(123), false},
 		{"Float32Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", Unset: false, IsJson: false}, float64(3.14), false},
 		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", Unset: false, IsJson: false}, float64(3.14), false},
+		{"BoolField", util.Input{ParameterHierarchy: []string{}, Value: "true", Unset: false, IsJson: false}, true, false},
 		{"Unsupported", util.Input{ParameterHierarchy: []string{}, Value: "bar", Unset: false, IsJson: false}, nil, true},
+
+		{"Int64Field", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false, IsJson: false}, false, true},
+		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false, IsJson: false}, false, true},
+		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "ab.c", Unset: false, IsJson: false}, false, true},
+		{"BoolField", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false, IsJson: false}, false, true},
 	}
 
 	for _, test := range tests {
