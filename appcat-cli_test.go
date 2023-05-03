@@ -92,24 +92,24 @@ func TestSetFields(t *testing.T) {
 		expected  interface{}
 		hasErr    bool
 	}{
-		{"StringField", util.Input{ParameterHierarchy: []string{}, Value: "foo", Unset: false, IsJson: false}, "foo", false},
-		{"Int8Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false, IsJson: false}, int64(42), false},
-		{"Int16Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false, IsJson: false}, int64(42), false},
-		{"Int32Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false, IsJson: false}, int64(42), false},
-		{"Int64Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false, IsJson: false}, int64(42), false},
-		{"UInt8Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false, IsJson: false}, uint64(123), false},
-		{"UInt16Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false, IsJson: false}, uint64(123), false},
-		{"UInt32Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false, IsJson: false}, uint64(123), false},
-		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false, IsJson: false}, uint64(123), false},
-		{"Float32Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", Unset: false, IsJson: false}, float64(3.14), false},
-		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", Unset: false, IsJson: false}, float64(3.14), false},
-		{"BoolField", util.Input{ParameterHierarchy: []string{}, Value: "true", Unset: false, IsJson: false}, true, false},
-		{"Unsupported", util.Input{ParameterHierarchy: []string{}, Value: "bar", Unset: false, IsJson: false}, nil, true},
+		{"StringField", util.Input{ParameterHierarchy: []string{}, Value: "foo", Unset: false}, "foo", false},
+		{"Int8Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false}, int64(42), false},
+		{"Int16Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false}, int64(42), false},
+		{"Int32Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false}, int64(42), false},
+		{"Int64Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false}, int64(42), false},
+		{"UInt8Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false}, uint64(123), false},
+		{"UInt16Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false}, uint64(123), false},
+		{"UInt32Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false}, uint64(123), false},
+		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false}, uint64(123), false},
+		{"Float32Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", Unset: false}, float64(3.14), false},
+		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", Unset: false}, float64(3.14), false},
+		{"BoolField", util.Input{ParameterHierarchy: []string{}, Value: "true", Unset: false}, true, false},
+		{"Unsupported", util.Input{ParameterHierarchy: []string{}, Value: "bar", Unset: false}, nil, true},
 
-		{"Int64Field", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false, IsJson: false}, false, true},
-		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false, IsJson: false}, false, true},
-		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "ab.c", Unset: false, IsJson: false}, false, true},
-		{"BoolField", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false, IsJson: false}, false, true},
+		{"Int64Field", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false}, false, true},
+		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false}, false, true},
+		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "ab.c", Unset: false}, false, true},
+		{"BoolField", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false}, false, true},
 	}
 
 	for _, test := range tests {

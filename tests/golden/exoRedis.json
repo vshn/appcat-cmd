@@ -2,6 +2,6 @@
     "default": "ExoscaleRedis",
     "parameters": "ExoscaleRedis --spec.parameters.size.plan=enterprise-large --spec.parameters.service.zone ch-fr-1 --spec.parameters.maintenance.timeOfDay 24:00:00",
     "unset": "ExoscaleRedis --spec.parameters.maintenance.dayOfWeek- --spec.parameters.service- --spec.parameters.service.redisSettings-",
-    "jsonInput": "ExoscaleRedis --spec.parameters.maintenance={\"DayOfWeek\":\"Monday\",\"TimeOfDay\":\"00:00:00\"} --spec.parameters.service {\"Zone\":\"ch-fr-99\"}"
+    "jsonInput": "ExoscaleRedis --spec.parameters.maintenance={\"DayOfWeek\":\"Monday\",\"TimeOfDay\":\"00:00:00\"} --spec.parameters.service {\"Zone\":\"ch-fr-99\"} --spec.parameters.size.plan {\"Foo\":\"Bar\"}"
 }
 

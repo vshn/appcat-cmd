@@ -15,6 +15,6 @@ spec:
       opensearchSettings: null
       zone: ch-fr-99
     size:
-      plan: 'hobbyist-2 '
+      plan: '{"Foo":"Bar"}'
   writeConnectionSecretToRef: {}
 status: {}

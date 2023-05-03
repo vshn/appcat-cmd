@@ -2,5 +2,5 @@
     "default": "ExoscaleMySQL",
     "parameters": "ExoscaleMySQL --spec.parameters.backup.timeOfDay=24:00:00 --spec.parameters.maintenance.dayOfWeek Monday --spec.parameters.service.majorVersion 9999",
     "unset": "ExoscaleMySQL --spec.parameters.maintenance.dayOfWeek- --spec.parameters.service- --spec.parameters.size.plan-",
-    "jsonInput": "ExoscaleMySQL --spec.parameters.maintenance={\"DayOfWeek\":\"Monday\",\"TimeOfDay\":\"00:00:00\"} --spec.parameters.service {\"Zone\":\"ch-fr-99\"}"
+    "jsonInput": "ExoscaleMySQL --spec.parameters.maintenance={\"DayOfWeek\":\"Monday\",\"TimeOfDay\":\"00:00:00\"} --spec.parameters.service {\"Zone\":\"ch-fr-99\"} --spec.parameters.size.plan {\"Foo\":\"Bar\"}"
 }

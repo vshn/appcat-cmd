@@ -13,6 +13,6 @@ spec:
       kafkaSettings: null
       zone: ch-fr-99
     size:
-      plan: 'startup-2 '
+      plan: '{"Foo":"Bar"}'
   writeConnectionSecretToRef: {}
 status: {}

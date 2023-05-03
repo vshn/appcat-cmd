@@ -7,7 +7,7 @@ spec:
   parameters:
     backup:
       retention: 12
-      schedule: 30 23 * * *
+      schedule: '{"Foo":"Bar"}'
     maintenance: {}
     network: {}
     restore: {}

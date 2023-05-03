@@ -2,5 +2,5 @@
     "default": "ExoscaleOpenSearch",
     "parameters": "ExoscaleOpenSearch --spec.parameters.backup.timeOfDay=24:00:00 --spec.parameters.size.plan enterprise-large --spec.parameters.service.majorVersion 9999",
     "unset": "ExoscaleOpenSearch --spec.parameters.maintenance.dayOfWeek- --spec.parameters.service- --spec.parameters.size.plan-",
-    "jsonInput": "ExoscaleOpenSearch --spec.parameters.maintenance={\"DayOfWeek\":\"Monday\",\"TimeOfDay\":\"00:00:00\"} --spec.parameters.service {\"Zone\":\"ch-fr-99\"}"
+    "jsonInput": "ExoscaleOpenSearch --spec.parameters.maintenance={\"DayOfWeek\":\"Monday\",\"TimeOfDay\":\"00:00:00\"} --spec.parameters.service {\"Zone\":\"ch-fr-99\"} --spec.parameters.size.plan {\"Foo\":\"Bar\"}"
 }

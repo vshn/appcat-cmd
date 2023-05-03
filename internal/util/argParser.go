@@ -1,7 +1,6 @@
 package util
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -10,7 +9,6 @@ type Input struct {
 	ParameterHierarchy []string
 	Value              string
 	Unset              bool
-	IsJson             bool
 }
 
 const (
@@ -45,11 +43,6 @@ func mapArgsToInput(args []string) []Input {
 			param = strings.TrimSuffix(param, UNSET_PARAMETER_SUFFIX)
 			input.ParameterHierarchy = strings.Split(param, HIERARCHY_DELIMITER)
 			input.Unset = true
-			inputList = append(inputList, input)
-			input = Input{}
-		} else if isJson(arg) {
-			input.Value = arg
-			input.IsJson = true
 			inputList = append(inputList, input)
 			input = Input{}
 		} else {
@@ -128,14 +121,6 @@ func CheckForMissingValues(arguments []string) error {
 	}
 
 	return nil
-}
-
-// Checks if the argument is a json map and returns if it is valid json
-func isJson(arg string) bool {
-	if strings.HasPrefix(arg, "{") && strings.HasSuffix(arg, "}") {
-		return json.Valid([]byte(arg))
-	}
-	return false
 }
 
 func isValue(arg string) bool {

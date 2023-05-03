@@ -12,6 +12,7 @@ spec:
     service:
       redisSettings: null
       zone: ch-fr-99
-    size: {}
+    size:
+      plan: '{"Foo":"Bar"}'
   writeConnectionSecretToRef: {}
 status: {}

@@ -8,6 +8,7 @@ spec:
     scheduling: {}
     service:
       redisSettings: '| activedefrag no'
+      version: '{"Foo":"Bar"}'
     size:
       cpuLimits: 99999m
       memoryLimits: 9999Gi

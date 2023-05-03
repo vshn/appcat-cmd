@@ -73,14 +73,14 @@ func setParameter(serviceType interface{}, input Input) (interface{}, error) {
 func SetFields(field reflect.Value, input Input) error {
 	if input.Unset {
 		field.Set(reflect.Zero(field.Type()))
-	} else if input.IsJson {
+	} else if field.Kind() == reflect.String {
+		field.SetString(input.Value)
+	} else if isJson(input.Value) {
 		field.Set(reflect.Zero(field.Type()))
 		err := json.Unmarshal([]byte(input.Value), field.Addr().Interface())
 		if err != nil {
 			return fmt.Errorf("Json value could not be Unmarshalled: %s", err)
 		}
-	} else if field.Kind() == reflect.String {
-		field.SetString(input.Value)
 	} else if field.Kind() >= reflect.Int && field.Kind() <= reflect.Int64 {
 		intValue, err := strconv.ParseInt(input.Value, 10, 64)
 		if err != nil {
@@ -134,4 +134,12 @@ func getStringCase(fieldNames []string, parameterName string) (string, error) {
 		}
 	}
 	return parameterName, fmt.Errorf("could not find field with name %s", parameterName)
+}
+
+// Checks if the argument is a json map and returns if it is valid json
+func isJson(arg string) bool {
+	if strings.HasPrefix(arg, "{") && strings.HasSuffix(arg, "}") {
+		return json.Valid([]byte(arg))
+	}
+	return false
 }
