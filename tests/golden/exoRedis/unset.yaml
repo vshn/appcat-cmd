@@ -6,12 +6,10 @@ metadata:
 spec:
   parameters:
     maintenance:
-      dayOfWeek: Sunday
       timeOfDay: "24:00:00"
     network: {}
     service:
       redisSettings: null
-      zone: ch-dk-2
     size: {}
   writeConnectionSecretToRef: {}
 status: {}

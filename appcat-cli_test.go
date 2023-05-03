@@ -19,6 +19,7 @@ func TestFormatInput(t *testing.T) {
 		{[]string{"--foo=bar=baz", "--foo", "bar"}, []string{"--foo", "bar=baz", "--foo", "bar"}, false},
 		{[]string{"--foo=bar", "--baz=2", "--fooby", "bary"}, []string{"--foo", "bar", "--baz", "2", "--fooby", "bary"}, false},
 		{[]string{"--fooby", "bary", "--foo=bar", "--baz=2"}, []string{"--fooby", "bary", "--foo", "bar", "--baz", "2"}, false},
+		{[]string{"--foo-", "--bar-", "--foobar-"}, []string{"--foo-", "--bar-", "--foobar-"}, false},
 	}
 
 	for _, test := range cleanInputTests {
@@ -81,6 +82,7 @@ func TestSetFields(t *testing.T) {
 		UInt64Field  uint64
 		Float32Field float32
 		Float64Field float64
+		BoolField    bool
 		Unsupported  interface{}
 	}
 
@@ -90,18 +92,24 @@ func TestSetFields(t *testing.T) {
 		expected  interface{}
 		hasErr    bool
 	}{
-		{"StringField", util.Input{ParameterHierarchy: []string{}, Value: "foo", JsonValue: nil, Unset: false, IsJson: false}, "foo", false},
-		{"Int8Field", util.Input{ParameterHierarchy: []string{}, Value: "042", JsonValue: nil, Unset: false, IsJson: false}, int64(42), false},
-		{"Int16Field", util.Input{ParameterHierarchy: []string{}, Value: "042", JsonValue: nil, Unset: false, IsJson: false}, int64(42), false},
-		{"Int32Field", util.Input{ParameterHierarchy: []string{}, Value: "042", JsonValue: nil, Unset: false, IsJson: false}, int64(42), false},
-		{"Int64Field", util.Input{ParameterHierarchy: []string{}, Value: "042", JsonValue: nil, Unset: false, IsJson: false}, int64(42), false},
-		{"UInt8Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", JsonValue: nil, Unset: false, IsJson: false}, uint64(123), false},
-		{"UInt16Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", JsonValue: nil, Unset: false, IsJson: false}, uint64(123), false},
-		{"UInt32Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", JsonValue: nil, Unset: false, IsJson: false}, uint64(123), false},
-		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", JsonValue: nil, Unset: false, IsJson: false}, uint64(123), false},
-		{"Float32Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", JsonValue: nil, Unset: false, IsJson: false}, float64(3.14), false},
-		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", JsonValue: nil, Unset: false, IsJson: false}, float64(3.14), false},
-		{"Unsupported", util.Input{ParameterHierarchy: []string{}, Value: "bar", JsonValue: nil, Unset: false, IsJson: false}, nil, true},
+		{"StringField", util.Input{ParameterHierarchy: []string{}, Value: "foo", Unset: false, IsJson: false}, "foo", false},
+		{"Int8Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false, IsJson: false}, int64(42), false},
+		{"Int16Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false, IsJson: false}, int64(42), false},
+		{"Int32Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false, IsJson: false}, int64(42), false},
+		{"Int64Field", util.Input{ParameterHierarchy: []string{}, Value: "042", Unset: false, IsJson: false}, int64(42), false},
+		{"UInt8Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false, IsJson: false}, uint64(123), false},
+		{"UInt16Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false, IsJson: false}, uint64(123), false},
+		{"UInt32Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false, IsJson: false}, uint64(123), false},
+		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "0123", Unset: false, IsJson: false}, uint64(123), false},
+		{"Float32Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", Unset: false, IsJson: false}, float64(3.14), false},
+		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "03.14", Unset: false, IsJson: false}, float64(3.14), false},
+		{"BoolField", util.Input{ParameterHierarchy: []string{}, Value: "true", Unset: false, IsJson: false}, true, false},
+		{"Unsupported", util.Input{ParameterHierarchy: []string{}, Value: "bar", Unset: false, IsJson: false}, nil, true},
+
+		{"Int64Field", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false, IsJson: false}, false, true},
+		{"UInt64Field", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false, IsJson: false}, false, true},
+		{"Float64Field", util.Input{ParameterHierarchy: []string{}, Value: "ab.c", Unset: false, IsJson: false}, false, true},
+		{"BoolField", util.Input{ParameterHierarchy: []string{}, Value: "abc", Unset: false, IsJson: false}, false, true},
 	}
 
 	for _, test := range tests {

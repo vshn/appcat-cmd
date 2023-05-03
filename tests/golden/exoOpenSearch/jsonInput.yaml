@@ -1,20 +1,19 @@
 apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscaleMySQL
+kind: ExoscaleOpenSearch
 metadata:
   creationTimestamp: null
-  name: ExoscaleMySQL
+  name: ExoscaleOpenSearch
 spec:
   parameters:
     backup:
-      timeOfDay: "24:00:00"
+      timeOfDay: "12:00:00"
     maintenance:
       dayOfWeek: Monday
-      timeOfDay: "24:00:00"
+      timeOfDay: "00:00:00"
     network: {}
     service:
-      majorVersion: "9999"
-      mysqlSettings: null
-      zone: ch-dk-2
+      opensearchSettings: null
+      zone: ch-fr-99
     size:
       plan: 'hobbyist-2 '
   writeConnectionSecretToRef: {}

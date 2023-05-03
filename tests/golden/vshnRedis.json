@@ -1,5 +1,7 @@
 {
     "default": "VSHNRedis",
-    "parameters": "VSHNRedis --spec.writeConnectionSecretToRef.Name=redisSecret --spec.parameters.tls.tlsauthClients false --spec.parameters.tls.tlsenabled false --spec.parameters.service.version 9999"
+    "parameters": "VSHNRedis --spec.writeConnectionSecretToRef.Name=redisSecret --spec.parameters.tls.tlsauthClients false --spec.parameters.tls.tlsenabled false --spec.parameters.service.version 9999",
+    "unset": "VSHNRedis --spec.parameters.size.disk- --spec.parameters.tls- --spec.parameters.service.redisSettings-",
+    "jsonInput": "VSHNRedis --spec.parameters.size={\"cpuLimits\":\"99999m\",\"memoryLimits\":\"9999Gi\"} --spec.parameters.service {\"redisSettings\":\"| activedefrag no\"}"
 }
 

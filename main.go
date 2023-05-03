@@ -61,9 +61,6 @@ func Main(apps applications.AppMap, args []string, out io.Writer) int {
 		return 1
 	}
 	plainArgs := args[1:]
-
-	fmt.Printf("%#v\n", args)
-
 	parsedType := util.NormalizeName(plainArgs[0])
 	app, ok := apps[parsedType]
 	if !ok {
@@ -82,8 +79,6 @@ func Main(apps applications.AppMap, args []string, out io.Writer) int {
 			return 1
 		}
 
-		// TODO: Setting an invalid value just ignores it instead of erroring
-		// example: `go run . VSHNPostgreSQL --spec.parameters.backup.retention asdf``
 		_, err = util.DecorateType(service, parameters)
 		if err != nil {
 			logrus.Errorf("failed setting parameters: %s", err)

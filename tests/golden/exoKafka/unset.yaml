@@ -1,17 +1,15 @@
 apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscaleRedis
+kind: ExoscaleKafka
 metadata:
   creationTimestamp: null
-  name: ExoscaleRedis
+  name: ExoscaleKafka
 spec:
   parameters:
     maintenance:
-      dayOfWeek: Sunday
       timeOfDay: "24:00:00"
     network: {}
     service:
-      redisSettings: null
-      zone: ch-dk-2
+      kafkaSettings: null
     size: {}
   writeConnectionSecretToRef: {}
 status: {}
