@@ -34,7 +34,6 @@ func ParseArgs(args []string) ([]Input, error) {
 }
 
 // Takes the input arguments and outputs them as separate Input structs
-// returns error if a value argument in json format is not valid
 func mapArgsToInput(args []string) []Input {
 	var inputList []Input
 	input := Input{}
@@ -63,8 +62,9 @@ func mapArgsToInput(args []string) []Input {
 	return inputList
 }
 
-// Parses raw cli input parameters and returns a fixed argument list
-// if a "=" is used in any form of "key=value" pair, the "="" needs to be at least the suffix of the key
+// Parses raw cli input parameters and returns a list of arguments
+// if a "=" is used in any form of "key=value" pair, the "=" needs to be the suffix of the key or the separator between key and value
+// if the "=" is the prefix of the value it is interpreted as part of the value
 // otherwise it's impossible to differentiate between a "key=value" pair and a key with a value(starting with "=")
 func FormatInputArguments(arguments []string) []string {
 	var fixedArguments []string
