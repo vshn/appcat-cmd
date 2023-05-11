@@ -2,12 +2,11 @@ apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleKafka
 metadata:
   creationTimestamp: null
-  generateName: 'my-kafka-example '
-  namespace: my-namespace
+  name: ExoscaleKafka
 spec:
   parameters:
     maintenance:
-      dayOfWeek: Sunday
+      dayOfWeek: Monday
       timeOfDay: "24:00:00"
     network: {}
     service:

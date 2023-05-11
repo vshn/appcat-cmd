@@ -6,20 +6,16 @@ metadata:
 spec:
   parameters:
     backup:
-      retention: 9999
-      schedule: 1 1 1 1 1
+      retention: 12
+      schedule: 30 23 * * *
     maintenance: {}
     network: {}
     restore: {}
-    scheduling:
-      nodeSelector:
-        appuio.io/node-class: plus
+    scheduling: {}
     service:
-      majorVersion: "15"
       pgSettings: null
     size:
-      cpu: 100000m
-      disk: 80Gi
+      cpu: 600m
       memory: 3500Mi
       requests:
         cpu: 300m

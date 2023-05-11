@@ -1,6 +1,7 @@
 package util
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -10,10 +11,9 @@ import (
 )
 
 // Iterates over all parameters and tries to set them
-func DecorateType(serviceType interface{}, fieldNames [][]string) (interface{}, error) {
-	for _, v := range fieldNames {
-		// TODO: this function "re-parses" arguments again
-		_, err := setParameter(serviceType, v[:len(v)-1], v[len(v)-1])
+func DecorateType(serviceType interface{}, inputs []Input) (interface{}, error) {
+	for _, input := range inputs {
+		_, err := setParameter(serviceType, input)
 		if err != nil {
 			return nil, err
 		}
@@ -24,14 +24,16 @@ func DecorateType(serviceType interface{}, fieldNames [][]string) (interface{}, 
 
 // Iterates through service Type to find and set the required parameters
 // logs error and exits if parameter does not match any in Type specified field names
-func setParameter(serviceType interface{}, parameterHierarchy []string, value string) (interface{}, error) {
+func setParameter(serviceType interface{}, input Input) (interface{}, error) {
 	reflectedServiceType := reflect.ValueOf(serviceType).Elem()
-	for _, parameterName := range parameterHierarchy {
+	var parameterName string
+	var err error
+	for _, parameterName = range input.ParameterHierarchy {
 		if !reflectedServiceType.FieldByName(parameterName).IsValid() {
-			var err error
+
 			parameterName, err = getStringCase(getAllFieldNames(reflectedServiceType), parameterName)
 			if err != nil {
-				err = fmt.Errorf("%w\n%s contains field with name %s : %t",
+				err = fmt.Errorf("%w %s contains field with name %s : %t",
 					err,
 					reflectedServiceType.Type().Name(),
 					parameterName,
@@ -42,31 +44,71 @@ func setParameter(serviceType interface{}, parameterHierarchy []string, value st
 		}
 
 		reflectedServiceType = reflectedServiceType.FieldByName(parameterName)
-
-		if reflectedServiceType.Kind() != reflect.Struct {
-			err := SetFields(reflectedServiceType, value)
-			if err != nil {
-				err := fmt.Errorf(
-					"%w\ncannot assign value %s to field %s with field Type %s",
-					err,
-					value,
-					strings.Join(parameterHierarchy, "."),
-					reflectedServiceType.FieldByName(parameterName).Kind(),
-				)
-				err = fmt.Errorf("%w\n%s contains field with name %s : %t",
-					err,
-					reflectedServiceType.Type().Name(),
-					parameterName,
-					reflectedServiceType.FieldByName(parameterName).IsValid(),
-				)
-				return nil, err
-			}
-			info := fmt.Sprintf("setting field: %s value: %s", strings.Join(parameterHierarchy, "."), value)
-			logrus.Info(info)
-		}
-
 	}
+
+	err = SetFields(reflectedServiceType, input)
+	if err != nil {
+		err = fmt.Errorf(
+			"%w cannot assign value %s to field %s with field Type %s",
+			err,
+			input.Value,
+			strings.Join(input.ParameterHierarchy, HIERARCHY_DELIMITER),
+			reflectedServiceType.Kind(),
+		)
+		err = fmt.Errorf("%w %s contains field with name %s : %t",
+			err,
+			reflectedServiceType.Type().Name(),
+			parameterName,
+			reflectedServiceType.IsValid(),
+		)
+		return nil, err
+	}
+	info := fmt.Sprintf("setting field: %s value: %s", strings.Join(input.ParameterHierarchy, HIERARCHY_DELIMITER), input.Value)
+	logrus.Info(info)
+
 	return serviceType, nil
+}
+
+// Sets value of reflected field with type checking
+func SetFields(field reflect.Value, input Input) error {
+	if input.Unset {
+		field.Set(reflect.Zero(field.Type()))
+	} else if field.Kind() == reflect.String {
+		field.SetString(input.Value)
+	} else if isJson(input.Value) {
+		field.Set(reflect.Zero(field.Type()))
+		err := json.Unmarshal([]byte(input.Value), field.Addr().Interface())
+		if err != nil {
+			return fmt.Errorf("Json value could not be Unmarshalled: %s", err)
+		}
+	} else if field.Kind() >= reflect.Int && field.Kind() <= reflect.Int64 {
+		intValue, err := strconv.ParseInt(input.Value, 10, 64)
+		if err != nil {
+			return err
+		}
+		field.SetInt(intValue)
+	} else if field.Kind() >= reflect.Uint && field.Kind() <= reflect.Uint64 {
+		intValue, err := strconv.ParseUint(input.Value, 10, 64)
+		if err != nil {
+			return err
+		}
+		field.SetUint(intValue)
+	} else if field.Kind() == reflect.Float32 || field.Kind() == reflect.Float64 {
+		floatValue, err := strconv.ParseFloat(input.Value, 64)
+		if err != nil {
+			return err
+		}
+		field.SetFloat(floatValue)
+	} else if field.Kind() == reflect.Bool {
+		boolValue, err := strconv.ParseBool(input.Value)
+		if err != nil {
+			return err
+		}
+		field.SetBool(boolValue)
+	} else {
+		return fmt.Errorf("setFields failed with field Type: %T and value: %s", reflect.TypeOf(field), input.Value)
+	}
+	return nil
 }
 
 // Returns all field names of a struct
@@ -83,29 +125,6 @@ func getAllFieldNames(field reflect.Value) []string {
 	return fieldNames
 }
 
-// Sets value of reflected field with type checking
-func SetFields(field reflect.Value, value string) error {
-	// TODO: Handle error cases on type conversion
-	if field.Kind() == reflect.String {
-		field.SetString(value)
-	} else if field.Kind() >= reflect.Int && field.Kind() <= reflect.Int64 {
-		intValue, _ := strconv.ParseInt(value, 10, 64)
-		field.SetInt(intValue)
-	} else if field.Kind() >= reflect.Uint && field.Kind() <= reflect.Uint64 {
-		intValue, _ := strconv.ParseUint(value, 10, 64)
-		field.SetUint(intValue)
-	} else if field.Kind() == reflect.Float32 || field.Kind() == reflect.Float64 {
-		floatValue, _ := strconv.ParseFloat(value, 64)
-		field.SetFloat(floatValue)
-	} else if field.Kind() == reflect.Bool {
-		boolValue, _ := strconv.ParseBool(value)
-		field.SetBool(boolValue)
-	} else {
-		return fmt.Errorf("setFields failed with field Type: %T and value: %s", field.Type(), value)
-	}
-	return nil
-}
-
 // Checks for all field names of a struct if any match the parameter name under Unicode case-folding
 // returns the correct field name if successfull, nil if unsuccessful
 func getStringCase(fieldNames []string, parameterName string) (string, error) {
@@ -115,4 +134,12 @@ func getStringCase(fieldNames []string, parameterName string) (string, error) {
 		}
 	}
 	return parameterName, fmt.Errorf("could not find field with name %s", parameterName)
+}
+
+// Checks if the argument is a json map and returns if it is valid json
+func isJson(arg string) bool {
+	if strings.HasPrefix(arg, "{") && strings.HasSuffix(arg, "}") {
+		return json.Valid([]byte(arg))
+	}
+	return false
 }

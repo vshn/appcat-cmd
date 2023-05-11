@@ -56,27 +56,44 @@ func findTests() map[string]map[string]string {
 	return testsMap
 }
 
+// Splits and aggregates args to correctly read in json input and space separated values
 func splitStringArgs(args string) []string {
-
 	prelimArgs := strings.Fields(args)
 	var result []string
 	var current string
-	inQuotes := false
+	isSpecial := false
 	for _, arg := range prelimArgs {
-		if strings.HasPrefix(arg, "\"") {
-			inQuotes = !inQuotes
-			current += arg[1:]
-		} else if strings.HasSuffix(arg, "\"") && inQuotes {
-			current += " " + arg[:len(arg)-1]
-			result = append(result, current)
-			current = ""
-			inQuotes = !inQuotes
-		} else if !inQuotes {
-			if current == "" {
-				result = append(result, arg)
+		if strings.HasPrefix(arg, "{") || strings.HasPrefix(arg, "\"") {
+			isSpecial = true
+		}
+
+		if isSpecial {
+			if strings.HasSuffix(arg, "}") || strings.HasSuffix(arg, "\"") {
+				if strings.HasSuffix(arg, "\"") {
+					current = strings.TrimSpace(current)
+					current = current[1:]
+					current += " " + arg[:len(arg)-1]
+					result = append(result, current)
+					current = ""
+					isSpecial = false
+				} else {
+					if current == "" {
+						result = append(result, arg)
+					} else {
+						current = strings.TrimSpace(current)
+						result = append(result, current+" "+arg)
+						current = ""
+					}
+
+					isSpecial = false
+				}
+			} else {
+				current += " " + arg
 			}
+
 		} else {
-			current += " " + arg
+			current = strings.TrimSpace(current)
+			result = append(result, arg)
 		}
 	}
 	return result
@@ -92,7 +109,7 @@ func testCase(t *testing.T, instanceName string, instanceFile map[string]string)
 
 	for testName, testParams := range instanceFile {
 
-		t.Run(testParams, func(t *testing.T) {
+		t.Run(testName, func(t *testing.T) {
 			args := []string{"appcat-cli"}
 			seperatedParams := splitStringArgs(testParams)
 			args = append(args, seperatedParams...)
@@ -102,7 +119,7 @@ func testCase(t *testing.T, instanceName string, instanceFile map[string]string)
 			outFile, err := os.Create(testName + ".yaml")
 			check(err, "Could not create outFile for test")
 			if c := Main(apps, args, outFile); c != 0 {
-				t.Errorf("appcat-cli exited with code %v while compiling with args '%v' \r\n %s", c, args, logs.String())
+				t.Errorf("\nappcat-cli exited with code %v while compiling with args '%v' \r\n %s", c, args, logs.String())
 			}
 		})
 	}

@@ -7,14 +7,11 @@ spec:
   parameters:
     scheduling: {}
     service:
-      redisSettings: '|activedefrag yes'
-      version: "7.0"
+      redisSettings: '| activedefrag no'
+      version: '{"Foo":"Bar"}'
     size:
-      cpuLimits: 1000m
-      cpuRequests: 500m
-      disk: 80Gi
-      memoryLimits: 1Gi
-      memoryRequests: 500Mi
+      cpuLimits: 99999m
+      memoryLimits: 9999Gi
     tls:
       authClients: true
       enabled: true

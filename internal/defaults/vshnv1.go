@@ -17,8 +17,7 @@ func (d *Defaults) GetVSHNPostgreSQLDefault() *vshnv1.VSHNPostgreSQL {
 	postgreSQLdefault.Spec.Parameters.Backup.Retention = 12
 	postgreSQLdefault.Spec.Parameters.Scheduling.NodeSelector = map[string]string{"appuio.io/node-class": "plus"}
 
-	postgreSQLdefault.SetGenerateName("pgsql-app1-prod")
-	postgreSQLdefault.SetNamespace("prod-app")
+	postgreSQLdefault.Name = "VSHNPostgreSQL"
 	return &postgreSQLdefault
 }
 
@@ -35,7 +34,6 @@ func (d *Defaults) GetVSHNRedisDefault() *vshnv1.VSHNRedis {
 	redisDefault.Spec.Parameters.Size.MemoryRequests = "500Mi"
 	redisDefault.Spec.Parameters.Size.MemoryLimits = "1Gi"
 
-	redisDefault.SetGenerateName("redis-app1-prod")
-	redisDefault.SetNamespace("prod-app")
+	redisDefault.Name = "VSHNRedis"
 	return &redisDefault
 }

@@ -61,9 +61,6 @@ func Main(apps applications.AppMap, args []string, out io.Writer) int {
 		return 1
 	}
 	plainArgs := args[1:]
-
-	fmt.Printf("%#v\n", args)
-
 	parsedType := util.NormalizeName(plainArgs[0])
 	app, ok := apps[parsedType]
 	if !ok {
@@ -72,21 +69,21 @@ func Main(apps applications.AppMap, args []string, out io.Writer) int {
 		return 1
 	}
 
+	var err error
 	service := app.GetDefault()
-	plainArgs, err := util.CleanInputArguments(plainArgs)
-	if err != nil {
-		logrus.Errorf("Invalid arguments: %s", err)
-		return 1
-	}
 
-	parameters := util.ParseArgs(plainArgs)
+	if len(plainArgs) >= 2 {
+		parameters, err := util.ParseArgs(plainArgs[1:])
+		if err != nil {
+			logrus.Errorf("Failed parsing arguments: %s", err)
+			return 1
+		}
 
-	// TODO: Setting an invalid value just ignores it instead of erroring
-	// example: `go run . VSHNPostgreSQL --spec.parameters.backup.retention asdf``
-	_, err = util.DecorateType(service, parameters)
-	if err != nil {
-		logrus.Errorf("failed setting parameters: %s", err)
-		return 1
+		_, err = util.DecorateType(service, parameters)
+		if err != nil {
+			logrus.Errorf("failed setting parameters: %s", err)
+			return 1
+		}
 	}
 
 	err = writeYAML(service, out)

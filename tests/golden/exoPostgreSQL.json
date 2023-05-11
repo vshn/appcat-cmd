@@ -1,5 +1,7 @@
 {
     "default": "ExoscalePostgreSQL",
-    "parameters": "ExoscalePostgreSQL --spec.parameters.backup.timeOfDay=24:00:00 --spec.parameters.service.majorVersion 13 --spec.parameters.size.plan enterprise-large "
+    "parameters": "ExoscalePostgreSQL --spec.parameters.backup.timeOfDay=24:00:00 --spec.parameters.service.majorVersion 13 --spec.parameters.size.plan enterprise-large",
+    "unset": "ExoscalePostgreSQL --spec.parameters.maintenance.dayOfWeek- --spec.parameters.service- --spec.parameters.size.plan-",
+    "jsonInput": "ExoscalePostgreSQL --spec.parameters.maintenance={\"DayOfWeek\":\"Monday\",\"TimeOfDay\":\"00:00:00\"} --spec.parameters.service {\"Zone\":\"ch-fr-99\"} --spec.parameters.size.plan {\"Foo\":\"Bar\"}"
 }
 

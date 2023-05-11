@@ -13,10 +13,8 @@ func (d *Defaults) GetExoscalePostgreSQLDefault() *exoscalev1.ExoscalePostgreSQL
 	postgreSQLdefault.Spec.Parameters.Backup.TimeOfDay = "12:00:00"
 	postgreSQLdefault.Spec.Parameters.Maintenance.DayOfWeek = "Sunday"
 	postgreSQLdefault.Spec.Parameters.Maintenance.TimeOfDay = "24:00:00"
+	postgreSQLdefault.Name = "ExoscalePostgreSQL"
 
-	// TODO: Clean up `generateName` and `namespace
-	postgreSQLdefault.SetGenerateName("my-postgres-example")
-	postgreSQLdefault.SetNamespace("my-namespace")
 	return &postgreSQLdefault
 }
 
@@ -27,8 +25,7 @@ func (d *Defaults) GetExoscaleRedisDefault() *exoscalev1.ExoscaleRedis {
 	redisDefault.Spec.Parameters.Maintenance.TimeOfDay = "24:00:00"
 	redisDefault.Spec.Parameters.Service.Zone = "ch-dk-2"
 
-	redisDefault.SetGenerateName("redis-app1-prod")
-	redisDefault.SetNamespace("prod-app")
+	redisDefault.Name = "ExoscaleRedis"
 	return &redisDefault
 }
 
@@ -41,8 +38,7 @@ func (d *Defaults) GetExoscaleKafkaDefault() *exoscalev1.ExoscaleKafka {
 	kafkaDefault.Spec.Parameters.Maintenance.DayOfWeek = "Sunday"
 	kafkaDefault.Spec.Parameters.Maintenance.TimeOfDay = "24:00:00"
 
-	kafkaDefault.SetGenerateName("my-kafka-example ")
-	kafkaDefault.SetNamespace("my-namespace")
+	kafkaDefault.Name = "ExoscaleKafka"
 	return &kafkaDefault
 }
 
@@ -56,8 +52,7 @@ func (d *Defaults) GetExoscaleMySQLDefault() *exoscalev1.ExoscaleMySQL {
 	mySQLdefault.Spec.Parameters.Maintenance.DayOfWeek = "Sunday"
 	mySQLdefault.Spec.Parameters.Maintenance.TimeOfDay = "24:00:00"
 
-	mySQLdefault.SetGenerateName("my-mysql-example")
-	mySQLdefault.SetNamespace("my-namespace")
+	mySQLdefault.Name = "ExoscaleMySQL"
 	return &mySQLdefault
 }
 
@@ -71,7 +66,6 @@ func (d *Defaults) GetExoscaleOpenSearchDefault() *exoscalev1.ExoscaleOpenSearch
 	openSearchDefault.Spec.Parameters.Maintenance.DayOfWeek = "Sunday"
 	openSearchDefault.Spec.Parameters.Maintenance.TimeOfDay = "24:00:00"
 
-	openSearchDefault.SetGenerateName("my-openSearch-example")
-	openSearchDefault.SetNamespace("my-namespace")
+	openSearchDefault.Name = "ExoscaleOpenSearch"
 	return &openSearchDefault
 }

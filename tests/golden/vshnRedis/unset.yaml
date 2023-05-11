@@ -7,15 +7,12 @@ spec:
   parameters:
     scheduling: {}
     service:
-      redisSettings: '|activedefrag yes'
-      version: "9999"
+      version: "7.0"
     size:
       cpuLimits: 1000m
       cpuRequests: 500m
-      disk: 80Gi
       memoryLimits: 1Gi
       memoryRequests: 500Mi
     tls: {}
-  writeConnectionSecretToRef:
-    name: redisSecret
+  writeConnectionSecretToRef: {}
 status: {}

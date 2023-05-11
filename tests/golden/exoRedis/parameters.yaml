@@ -2,8 +2,7 @@ apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleRedis
 metadata:
   creationTimestamp: null
-  generateName: redis-app1-prod
-  namespace: prod-app
+  name: ExoscaleRedis
 spec:
   parameters:
     maintenance:
@@ -13,6 +12,7 @@ spec:
     service:
       redisSettings: null
       zone: ch-fr-1
-    size: {}
+    size:
+      plan: enterprise-large
   writeConnectionSecretToRef: {}
 status: {}
