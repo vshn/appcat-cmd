@@ -8,14 +8,14 @@ spec:
     backup:
       timeOfDay: "12:00:00"
     maintenance:
-      dayOfWeek: Sunday
-      timeOfDay: "24:00:00"
+      dayOfWeek: sunday
+      timeOfDay: "00:00:00"
     network: {}
     service:
       majorVersion: "15"
       pgSettings: null
       zone: ch-dk-2
     size:
-      plan: 'hobbyist-2 '
+      plan: hobbyist-2
   writeConnectionSecretToRef: {}
 status: {}

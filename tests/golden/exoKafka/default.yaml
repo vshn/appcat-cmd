@@ -6,14 +6,14 @@ metadata:
 spec:
   parameters:
     maintenance:
-      dayOfWeek: Sunday
-      timeOfDay: "24:00:00"
+      dayOfWeek: sunday
+      timeOfDay: "00:00:00"
     network: {}
     service:
       kafkaSettings: null
       version: 3.4.0
       zone: ch-dk-2
     size:
-      plan: 'startup-2 '
+      plan: startup-2
   writeConnectionSecretToRef: {}
 status: {}

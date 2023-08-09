@@ -8,7 +8,7 @@ spec:
     backup:
       timeOfDay: "12:00:00"
     maintenance:
-      timeOfDay: "24:00:00"
+      timeOfDay: "00:00:00"
     network: {}
     service:
       mysqlSettings: null
