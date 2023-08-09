@@ -16,5 +16,6 @@ spec:
       zone: ch-fr-99
     size:
       plan: '{"Foo":"Bar"}'
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: mysql-jsonInput-creds
 status: {}

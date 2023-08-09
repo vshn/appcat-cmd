@@ -11,5 +11,6 @@ spec:
     service:
       kafkaSettings: null
     size: {}
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: kafka-unset-creds
 status: {}

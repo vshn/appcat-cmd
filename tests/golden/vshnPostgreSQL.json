@@ -1,5 +1,6 @@
 {
     "default": "postgres-default --kind VSHNPostgreSQL",
+    "secret-ref": "postgres-secret-ref --kind VSHNPostgreSQL --spec.writeconnectionsecrettoref.name new-cred",
     "parameters": "postgres-parameters --kind VSHNPostgreSQL --spec.parameters.backup.retention=9999 --spec.parameters.backup.schedule \"1 1 1 1 1\" --spec.parameters.size.CPU 100000m",
     "unset": "postgres-unset --kind VSHNPostgreSQL --spec.parameters.size.disk- --spec.parameters.service- --spec.parameters.scheduling.nodeSelector-",
     "jsonInput": "postgres-jsonInput --kind VSHNPostgreSQL --spec.parameters.size={\"cpu\":\"99999m\",\"Memory\":\"9999Gi\",\"disk\":\"9999Gi\",\"Requests\":{\"Memory\":\"9999Gi\"}} --spec.parameters.scheduling.nodeSelector {\"appuio.io/node-class\":\"testing\"} --spec.parameters.backup.schedule {\"Foo\":\"Bar\"}"

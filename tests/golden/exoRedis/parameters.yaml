@@ -14,5 +14,6 @@ spec:
       zone: ch-fr-1
     size:
       plan: enterprise-large
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: redis-parameters-creds
 status: {}

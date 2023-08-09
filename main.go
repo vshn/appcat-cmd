@@ -86,9 +86,11 @@ func Main(apps applications.AppMap, args []string, out io.Writer) int {
 		printUsage(args[0], apps)
 		return 1
 	}
-	////appcat-cli serviceKind
+
 	service := app.GetDefault()
 	parameters = append(parameters, util.Input{ParameterHierarchy: []string{"ObjectMeta", "Name"}, Value: resourceName, Unset: false})
+	parameters = append([]util.Input{{ParameterHierarchy: []string{"Spec", "WriteConnectionSecretToRef", "Name"}, Value: resourceName + "-creds", Unset: false}}, parameters...)
+
 	_, err = util.DecorateType(service, parameters)
 	if err != nil {
 		logrus.Errorf("failed setting parameters: %s", err)

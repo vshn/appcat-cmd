@@ -18,5 +18,6 @@ spec:
     tls:
       authClients: true
       enabled: true
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: redis-default-creds
 status: {}

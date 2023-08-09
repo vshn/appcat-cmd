@@ -24,5 +24,6 @@ spec:
       requests:
         cpu: 300m
         memory: 1000Mi
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: postgres-default-creds
 status: {}
