@@ -13,5 +13,6 @@ spec:
     service:
       mysqlSettings: null
     size: {}
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: mysql-unset-creds
 status: {}

@@ -17,5 +17,6 @@ spec:
       zone: ch-dk-2
     size:
       plan: enterprise-large
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: postgres-parameters-creds
 status: {}

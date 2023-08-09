@@ -13,5 +13,6 @@ spec:
       redisSettings: null
       zone: ch-dk-2
     size: {}
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: redis-default-creds
 status: {}

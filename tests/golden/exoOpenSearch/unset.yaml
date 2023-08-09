@@ -13,5 +13,6 @@ spec:
     service:
       opensearchSettings: null
     size: {}
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: opensearch-unset-creds
 status: {}

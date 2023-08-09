@@ -23,5 +23,6 @@ spec:
       memory: 9999Gi
       requests:
         memory: 9999Gi
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: postgres-jsonInput-creds
 status: {}
