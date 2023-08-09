@@ -17,11 +17,11 @@ func init() {
 }
 
 func printUsage(cmd string, apps applications.AppMap) {
-	out := fmt.Sprintf(`usage: %s <type> [options]
+	out := fmt.Sprintf(`usage: %s <serviceName> --kind <serviceKind> [options]
 
 Generate AppCat YAML manifests
 
-Known types:
+Known service kinds:
 `, cmd)
 
 	names := apps.Names()
@@ -56,36 +56,44 @@ func main() {
 // If during execution, an unrecoverable error occurs (usually due to a bug),
 // an error message is logged and the program will panic.
 func Main(apps applications.AppMap, args []string, out io.Writer) int {
-	if len(args) < 2 {
-		printUsage(args[0], apps)
-		return 1
-	}
-	plainArgs := args[1:]
-	parsedType := util.NormalizeName(plainArgs[0])
-	app, ok := apps[parsedType]
-	if !ok {
-		logrus.Errorf("service type '%s' is not supported", parsedType)
+	if len(args) < 4 {
 		printUsage(args[0], apps)
 		return 1
 	}
 
 	var err error
-	service := app.GetDefault()
+	var parameters []util.Input
 
-	if len(plainArgs) >= 2 {
-		parameters, err := util.ParseArgs(plainArgs[1:])
-		if err != nil {
-			logrus.Errorf("Failed parsing arguments: %s", err)
-			return 1
-		}
+	// args[0] is the binary
+	resourceName := args[1]
+	parameters, err = util.ParseArgs(args[2:])
 
-		_, err = util.DecorateType(service, parameters)
-		if err != nil {
-			logrus.Errorf("failed setting parameters: %s", err)
-			return 1
-		}
+	if err != nil {
+		logrus.Errorf("Failed parsing arguments: %s", err)
+		return 1
 	}
 
+	serviceKind, err := util.FilterServiceKind(parameters)
+	if err != nil {
+		logrus.Errorf("%s", err)
+		printUsage(args[0], apps)
+		return 1
+	}
+	serviceKind = util.NormalizeName(serviceKind)
+	app, ok := apps[serviceKind]
+	if !ok {
+		logrus.Errorf("service type '%s' is not supported", serviceKind)
+		printUsage(args[0], apps)
+		return 1
+	}
+	////appcat-cli serviceKind
+	service := app.GetDefault()
+	parameters = append(parameters, util.Input{ParameterHierarchy: []string{"ObjectMeta", "Name"}, Value: resourceName, Unset: false})
+	_, err = util.DecorateType(service, parameters)
+	if err != nil {
+		logrus.Errorf("failed setting parameters: %s", err)
+		return 1
+	}
 	err = writeYAML(service, out)
 	if err != nil {
 		logrus.Panicf("failed writing YAML: %s", err)
