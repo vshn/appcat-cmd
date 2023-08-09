@@ -13,5 +13,6 @@ spec:
     service:
       pgSettings: null
     size: {}
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: postgres-unset-creds
 status: {}

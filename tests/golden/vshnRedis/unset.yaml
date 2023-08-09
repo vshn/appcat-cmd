@@ -14,5 +14,6 @@ spec:
       memoryLimits: 1Gi
       memoryRequests: 500Mi
     tls: {}
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: redis-unset-creds
 status: {}

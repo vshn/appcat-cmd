@@ -15,5 +15,6 @@ spec:
       zone: ch-fr-1
     size:
       plan: enterprise-large
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: kafka-parameters-creds
 status: {}

@@ -17,5 +17,6 @@ spec:
       zone: ch-dk-2
     size:
       plan: hobbyist-2
-  writeConnectionSecretToRef: {}
+  writeConnectionSecretToRef:
+    name: mysql-parameters-creds
 status: {}

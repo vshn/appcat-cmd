@@ -1,5 +1,6 @@
 {
     "default": "redis-default --kind VSHNRedis",
+    "secret-ref": "redis-secret-ref --kind VSHNRedis --spec.writeconnectionsecrettoref.name new-cred",
     "parameters": "redis-parameters --kind VSHNRedis --spec.writeConnectionSecretToRef.Name=redisSecret --spec.parameters.tls.tlsauthClients false --spec.parameters.tls.tlsenabled false --spec.parameters.service.version 9999",
     "unset": "redis-unset --kind VSHNRedis --spec.parameters.size.disk- --spec.parameters.tls- --spec.parameters.service.redisSettings-",
     "jsonInput": "redis-jsonInput --kind VSHNRedis --spec.parameters.size={\"cpuLimits\":\"99999m\",\"memoryLimits\":\"9999Gi\"} --spec.parameters.service {\"redisSettings\":\"| activedefrag no\"} --spec.parameters.service.version {\"Foo\":\"Bar\"}"
