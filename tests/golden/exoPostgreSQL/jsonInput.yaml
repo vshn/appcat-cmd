@@ -2,7 +2,7 @@ apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscalePostgreSQL
 metadata:
   creationTimestamp: null
-  name: ExoscalePostgreSQL
+  name: postgres-jsonInput
 spec:
   parameters:
     backup:

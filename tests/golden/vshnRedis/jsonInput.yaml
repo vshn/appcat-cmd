@@ -2,7 +2,7 @@ apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNRedis
 metadata:
   creationTimestamp: null
-  name: VSHNRedis
+  name: redis-jsonInput
 spec:
   parameters:
     scheduling: {}

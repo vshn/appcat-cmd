@@ -3,6 +3,8 @@ package util
 import (
 	"fmt"
 	"strings"
+
+	"golang.org/x/exp/slices"
 )
 
 type Input struct {
@@ -16,6 +18,7 @@ const (
 	PARAMETER_PREFIX       = "--"
 	HIERARCHY_DELIMITER    = "."
 	PARAM_VALUE_INFIX      = "="
+	K8S_SERVICE_KIND       = "kind"
 )
 
 // Takes the input arguments and outputs them as separate Input structs
@@ -29,30 +32,6 @@ func ParseArgs(args []string) ([]Input, error) {
 	inputList := mapArgsToInput(cleanArgs)
 
 	return inputList, nil
-}
-
-// Takes the input arguments and outputs them as separate Input structs
-func mapArgsToInput(args []string) []Input {
-	var inputList []Input
-	input := Input{}
-	for _, arg := range args {
-		if isParameter(arg) {
-			input.ParameterHierarchy = strings.Split(strings.TrimPrefix(arg, PARAMETER_PREFIX), HIERARCHY_DELIMITER)
-		} else if isParamToUnset(arg) {
-			param := strings.TrimPrefix(arg, PARAMETER_PREFIX)
-			param = strings.TrimSuffix(param, UNSET_PARAMETER_SUFFIX)
-			input.ParameterHierarchy = strings.Split(param, HIERARCHY_DELIMITER)
-			input.Unset = true
-			inputList = append(inputList, input)
-			input = Input{}
-		} else {
-			input.Value = arg
-			inputList = append(inputList, input)
-			input = Input{}
-		}
-
-	}
-	return inputList
 }
 
 // Parses raw cli input parameters and returns a list of arguments
@@ -121,6 +100,40 @@ func CheckForMissingValues(arguments []string) error {
 	}
 
 	return nil
+}
+func FilterServiceKind(input []Input) (string, error) {
+	serviceKindIndex := slices.IndexFunc(input, func(input Input) bool {
+		return input.ParameterHierarchy[0] == K8S_SERVICE_KIND
+	})
+	if serviceKindIndex == -1 {
+		return "", fmt.Errorf("ServiceKind is missing")
+	} else {
+		return input[serviceKindIndex].Value, nil
+	}
+}
+
+// Takes the input arguments and outputs them as separate Input structs
+func mapArgsToInput(args []string) []Input {
+	var inputList []Input
+	input := Input{}
+	for _, arg := range args {
+		if isParameter(arg) {
+			input.ParameterHierarchy = strings.Split(strings.TrimPrefix(arg, PARAMETER_PREFIX), HIERARCHY_DELIMITER)
+		} else if isParamToUnset(arg) {
+			param := strings.TrimPrefix(arg, PARAMETER_PREFIX)
+			param = strings.TrimSuffix(param, UNSET_PARAMETER_SUFFIX)
+			input.ParameterHierarchy = strings.Split(param, HIERARCHY_DELIMITER)
+			input.Unset = true
+			inputList = append(inputList, input)
+			input = Input{}
+		} else {
+			input.Value = arg
+			inputList = append(inputList, input)
+			input = Input{}
+		}
+
+	}
+	return inputList
 }
 
 func isValue(arg string) bool {

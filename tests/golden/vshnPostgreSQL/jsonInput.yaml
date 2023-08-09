@@ -2,7 +2,7 @@ apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNPostgreSQL
 metadata:
   creationTimestamp: null
-  name: VSHNPostgreSQL
+  name: postgres-jsonInput
 spec:
   parameters:
     backup:

@@ -1,6 +1,6 @@
 {
-    "default": "ExoscaleKafka",
-    "parameters": "ExoscaleKafka --spec.parameters.maintenance.dayOfWeek=Monday --spec.parameters.service.zone ch-fr-1 --spec.parameters.size.plan enterprise-large",
-    "unset": "ExoscaleKafka --spec.parameters.maintenance.dayOfWeek- --spec.parameters.service- --spec.parameters.size.plan-",
-    "jsonInput": "ExoscaleKafka --spec.parameters.maintenance={\"DayOfWeek\":\"Monday\",\"TimeOfDay\":\"00:00:00\"} --spec.parameters.service {\"Zone\":\"ch-fr-99\"} --spec.parameters.size.plan {\"Foo\":\"Bar\"}"
+    "default": "kafka-default --kind ExoscaleKafka",
+    "parameters": "kafka-parameters --kind ExoscaleKafka --spec.parameters.maintenance.dayOfWeek=Monday --spec.parameters.service.zone ch-fr-1 --spec.parameters.size.plan enterprise-large",
+    "unset": "kafka-unset --kind ExoscaleKafka --spec.parameters.maintenance.dayOfWeek- --spec.parameters.service- --spec.parameters.size.plan-",
+    "jsonInput": "kafka-jsonInput --kind ExoscaleKafka --spec.parameters.maintenance={\"DayOfWeek\":\"Monday\",\"TimeOfDay\":\"00:00:00\"} --spec.parameters.service {\"Zone\":\"ch-fr-99\"} --spec.parameters.size.plan {\"Foo\":\"Bar\"}"
 }

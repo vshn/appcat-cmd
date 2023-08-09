@@ -2,7 +2,7 @@ apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleRedis
 metadata:
   creationTimestamp: null
-  name: ExoscaleRedis
+  name: redis-jsonInput
 spec:
   parameters:
     maintenance:
