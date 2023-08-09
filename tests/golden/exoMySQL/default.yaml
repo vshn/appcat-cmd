@@ -1,5 +1,5 @@
 apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscaleMySQL
+kind: exoscalemysql
 metadata:
   creationTimestamp: null
   name: mysql-default
@@ -8,8 +8,8 @@ spec:
     backup:
       timeOfDay: "12:00:00"
     maintenance:
-      dayOfWeek: Sunday
-      timeOfDay: "24:00:00"
+      dayOfWeek: sunday
+      timeOfDay: "00:00:00"
     network: {}
     service:
       majorVersion: "8"

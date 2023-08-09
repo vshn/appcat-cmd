@@ -1,12 +1,12 @@
 apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscaleRedis
+kind: exoscaleredis
 metadata:
   creationTimestamp: null
   name: redis-unset
 spec:
   parameters:
     maintenance:
-      timeOfDay: "24:00:00"
+      timeOfDay: "00:00:00"
     network: {}
     service:
       redisSettings: null

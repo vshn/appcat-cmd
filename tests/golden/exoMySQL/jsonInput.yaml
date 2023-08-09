@@ -1,5 +1,5 @@
 apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscaleMySQL
+kind: exoscalemysql
 metadata:
   creationTimestamp: null
   name: mysql-jsonInput
@@ -8,14 +8,14 @@ spec:
     backup:
       timeOfDay: "12:00:00"
     maintenance:
-      dayOfWeek: Monday
+      dayOfWeek: monday
       timeOfDay: "00:00:00"
     network: {}
     service:
       mysqlSettings: null
       zone: ch-fr-99
     size:
-      plan: '{"Foo":"Bar"}'
+      plan: '{"foo":"bar"}'
   writeConnectionSecretToRef:
     name: mysql-jsonInput-creds
 status: {}

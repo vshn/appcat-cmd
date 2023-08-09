@@ -1,5 +1,5 @@
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNRedis
+kind: vshnredis
 metadata:
   creationTimestamp: null
   name: redis-default

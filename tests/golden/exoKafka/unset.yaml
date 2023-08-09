@@ -1,12 +1,12 @@
 apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscaleKafka
+kind: exoscalekafka
 metadata:
   creationTimestamp: null
   name: kafka-unset
 spec:
   parameters:
     maintenance:
-      timeOfDay: "24:00:00"
+      timeOfDay: "00:00:00"
     network: {}
     service:
       kafkaSettings: null

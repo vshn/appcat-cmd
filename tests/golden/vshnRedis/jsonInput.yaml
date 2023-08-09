@@ -1,5 +1,5 @@
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNRedis
+kind: vshnredis
 metadata:
   creationTimestamp: null
   name: redis-jsonInput
@@ -8,10 +8,10 @@ spec:
     scheduling: {}
     service:
       redisSettings: '| activedefrag no'
-      version: '{"Foo":"Bar"}'
+      version: '{"foo":"bar"}'
     size:
       cpuLimits: 99999m
-      memoryLimits: 9999Gi
+      memoryLimits: 9999gi
     tls:
       authClients: true
       enabled: true

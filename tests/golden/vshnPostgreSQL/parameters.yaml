@@ -1,5 +1,5 @@
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNPostgreSQL
+kind: vshnpostgresql
 metadata:
   creationTimestamp: null
   name: postgres-parameters

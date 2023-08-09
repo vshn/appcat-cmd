@@ -1,5 +1,5 @@
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNPostgreSQL
+kind: vshnpostgresql
 metadata:
   creationTimestamp: null
   name: postgres-jsonInput
@@ -7,7 +7,7 @@ spec:
   parameters:
     backup:
       retention: 12
-      schedule: '{"Foo":"Bar"}'
+      schedule: '{"foo":"bar"}'
     maintenance: {}
     network: {}
     restore: {}
@@ -19,10 +19,10 @@ spec:
       pgSettings: null
     size:
       cpu: 99999m
-      disk: 9999Gi
-      memory: 9999Gi
+      disk: 9999gi
+      memory: 9999gi
       requests:
-        memory: 9999Gi
+        memory: 9999gi
   writeConnectionSecretToRef:
     name: postgres-jsonInput-creds
 status: {}

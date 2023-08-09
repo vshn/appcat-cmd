@@ -1,19 +1,19 @@
 apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscaleRedis
+kind: exoscaleredis
 metadata:
   creationTimestamp: null
   name: redis-jsonInput
 spec:
   parameters:
     maintenance:
-      dayOfWeek: Monday
+      dayOfWeek: monday
       timeOfDay: "00:00:00"
     network: {}
     service:
       redisSettings: null
       zone: ch-fr-99
     size:
-      plan: '{"Foo":"Bar"}'
+      plan: '{"foo":"bar"}'
   writeConnectionSecretToRef:
     name: redis-jsonInput-creds
 status: {}

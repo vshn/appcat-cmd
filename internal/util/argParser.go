@@ -127,7 +127,7 @@ func mapArgsToInput(args []string) []Input {
 			inputList = append(inputList, input)
 			input = Input{}
 		} else {
-			input.Value = arg
+			input.Value = NormalizeName(arg)
 			inputList = append(inputList, input)
 			input = Input{}
 		}

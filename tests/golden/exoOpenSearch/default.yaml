@@ -1,5 +1,5 @@
 apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscaleOpenSearch
+kind: exoscaleopensearch
 metadata:
   creationTimestamp: null
   name: opensearch-default
@@ -8,8 +8,8 @@ spec:
     backup:
       timeOfDay: "12:00:00"
     maintenance:
-      dayOfWeek: Sunday
-      timeOfDay: "24:00:00"
+      dayOfWeek: sunday
+      timeOfDay: "00:00:00"
     network: {}
     service:
       majorVersion: "2"
