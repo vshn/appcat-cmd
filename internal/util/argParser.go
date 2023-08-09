@@ -108,7 +108,6 @@ func FilterServiceKind(input []Input) (string, error) {
 	} else {
 		return serviceKindInput[0].Value, nil
 	}
-
 }
 
 func filterInput(slice []Input, predicate func(Input) bool) []Input {
