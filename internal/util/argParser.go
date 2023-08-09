@@ -3,6 +3,8 @@ package util
 import (
 	"fmt"
 	"strings"
+
+	"golang.org/x/exp/slices"
 )
 
 type Input struct {
@@ -100,24 +102,14 @@ func CheckForMissingValues(arguments []string) error {
 	return nil
 }
 func FilterServiceKind(input []Input) (string, error) {
-	serviceKindInput := filterInput(input, func(input Input) bool {
+	serviceKindIndex := slices.IndexFunc(input, func(input Input) bool {
 		return input.ParameterHierarchy[0] == K8S_SERVICE_KIND
 	})
-	if len(serviceKindInput) != 1 {
+	if serviceKindIndex == -1 {
 		return "", fmt.Errorf("ServiceKind is missing")
 	} else {
-		return serviceKindInput[0].Value, nil
+		return input[serviceKindIndex].Value, nil
 	}
-}
-
-func filterInput(slice []Input, predicate func(Input) bool) []Input {
-	var result []Input
-	for _, item := range slice {
-		if predicate(item) {
-			result = append(result, item)
-		}
-	}
-	return result
 }
 
 // Takes the input arguments and outputs them as separate Input structs

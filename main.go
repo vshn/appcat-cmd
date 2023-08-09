@@ -56,7 +56,7 @@ func main() {
 // If during execution, an unrecoverable error occurs (usually due to a bug),
 // an error message is logged and the program will panic.
 func Main(apps applications.AppMap, args []string, out io.Writer) int {
-	if len(args) < 4 {
+	if len(args) < 3 {
 		printUsage(args[0], apps)
 		return 1
 	}
