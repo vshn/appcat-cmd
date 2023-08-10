@@ -1,2 +1,6 @@
-/appcat-cmd
+/appcat-cli
 examples/
+
+# Goreleaser
+/dist/
+/.github/release-notes.md
