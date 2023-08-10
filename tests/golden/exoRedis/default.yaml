@@ -6,8 +6,8 @@ metadata:
 spec:
   parameters:
     maintenance:
-      dayOfWeek: Sunday
-      timeOfDay: "24:00:00"
+      dayOfWeek: sunday
+      timeOfDay: "00:00:00"
     network: {}
     service:
       redisSettings: null
