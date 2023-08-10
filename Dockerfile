@@ -1,15 +1,13 @@
-# Build
-FROM golang:latest AS build
+FROM docker.io/library/golang:alpine AS build
 
-ENV HOME=/appcat-cli
+WORKDIR /src
+ENV CGO_ENABLED=0
 
-WORKDIR ${HOME}
-
-COPY . ${HOME}
-
-RUN go build -v .
+COPY . .
+RUN go build -v -o /appcat-cli .
 
 # Runtime
-FROM ghcr.io/vshn/k8ify:latest
+FROM docker.io/library/alpine:latest
 
-COPY --from=build appcat-cli /bin/appcat
+ENTRYPOINT ["/bin/appcat-cli"]
+COPY --from=build /appcat-cli /bin/appcat-cli
