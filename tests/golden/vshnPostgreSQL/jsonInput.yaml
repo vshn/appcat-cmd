@@ -8,7 +8,9 @@ spec:
     backup:
       retention: 12
       schedule: '{"Foo":"Bar"}'
+    encryption: {}
     maintenance: {}
+    monitoring: {}
     network: {}
     restore: {}
     scheduling:
@@ -23,6 +25,8 @@ spec:
       memory: 9999Gi
       requests:
         memory: 9999Gi
+    updateStrategy: {}
+  resourceRef: {}
   writeConnectionSecretToRef:
     name: postgres-jsonInput-creds
 status: {}

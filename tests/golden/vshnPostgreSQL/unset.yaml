@@ -8,7 +8,9 @@ spec:
     backup:
       retention: 12
       schedule: 30 23 * * *
+    encryption: {}
     maintenance: {}
+    monitoring: {}
     network: {}
     restore: {}
     scheduling: {}
@@ -20,6 +22,8 @@ spec:
       requests:
         cpu: 300m
         memory: 1000Mi
+    updateStrategy: {}
+  resourceRef: {}
   writeConnectionSecretToRef:
     name: postgres-unset-creds
 status: {}
