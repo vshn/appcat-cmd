@@ -26,9 +26,9 @@ Out of scope(for now) of this project are:
 
 ## Testing
 
-To test the tool with standart parameters, in the root of the repository run:
+To test the tool; in the root of the repository run:
 ```shell
-go run . "VSHNPostgreSQL" "--spec.parameters.service.majorVersion" "1" "--spec.parameters.size.CPU" "6m" "--spec.parameters.size.disk" "8Gi" "--spec.parameters.size.memory" "35Mi" "--Spec.Parameters.Size.Requests.CPU" "3m" "--spec.parameters.size.requests.memory" "1Mi" "--spec.parameters.backup.schedule" "3 2 * * *" "--spec.parameters.backup.retention" "1"
+go test .
 ```
 
 ## License
