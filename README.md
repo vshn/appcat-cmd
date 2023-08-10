@@ -18,16 +18,72 @@ Out of scope(for now) of this project are:
 
 ### Command Line Arguments
 
-`appcatcli` supports the following command line arguments:
+`appcatcli` expects input in the form of:<br>
+`appcatcli ServiceName --kind ServiceKind [Options]`<br>
 
-- Argument #1: `Name of custom resource type`. Mandatory.
-- Argument #2...N: `Parameters of custom resource`. Optional.
+#### Defaults:
+Global:
+| Key  | Value  |
+| ------ | -------|
+|`Spec.WriteConnectionSecretToRef.Name`| ServiceName+refSlug |
+
+Exoscale:
+|ServiceKind |Key  | Value  |
+| ------ | -------|-------|
+|ExoscalePostgreSQL|`Spec.Parameters.Service.MajorVersion`| 15|
+|ExoscalePostgreSQL|`Spec.Parameters.Service.Zone`| ch-dk-2|
+|ExoscalePostgreSQL|`Spec.Parameters.Size.Plan`| hobbyist-2|
+|ExoscalePostgreSQL|`Spec.Parameters.Backup.TimeOfDay`| 12:00:00|
+|ExoscalePostgreSQL|`Spec.Parameters.Maintenance.DayOfWeek`| sunday|
+|ExoscalePostgreSQL|`Spec.Parameters.Maintenance.TimeOfDaye`| 00:00:00|
+|ExoscaleRedis|`Spec.Parameters.Maintenance.DayOfWeek`|sunday|
+|ExoscaleRedis|`Spec.Parameters.Maintenance.TimeOfDay`|00:00:00|
+|ExoscaleRedis|`Spec.Parameters.Service.Zone`|ch-dk-2|
+|ExoscaleKafka|`Spec.Parameters.Service.Version`|3.4.0|
+|ExoscaleKafka|`Spec.Parameters.Service.Zone`|ch-dk-2|
+|ExoscaleKafka|`Spec.Parameters.Size.Plan`|startup-2|
+|ExoscaleKafka|`Spec.Parameters.Maintenance.DayOfWeek`|sunday|
+|ExoscaleKafka|`Spec.Parameters.Maintenance.TimeOfDay`|00:00:00|
+|ExoscaleMySQL|`Spec.Parameters.Service.MajorVersion`|8|
+|ExoscaleMySQL|`Spec.Parameters.Service.Zone`|ch-dk-2|
+|ExoscaleMySQL|`Spec.Parameters.Size.Plan`|hobbyist-2|
+|ExoscaleMySQL|`Spec.Parameters.Backup.TimeOfDay`|12:00:00|
+|ExoscaleMySQL|`Spec.Parameters.Maintenance.DayOfWeek`|sunday|
+|ExoscaleMySQL|`Spec.Parameters.Maintenance.TimeOfDay`|00:00:00|
+|ExoscaleOpenSearch|`Spec.Parameters.Service.MajorVersion`|2|
+|ExoscaleOpenSearch|`Spec.Parameters.Service.Zone`|ch-dk-2|
+|ExoscaleOpenSearch|`Spec.Parameters.Size.Plan`|hobbyist-2|
+|ExoscaleOpenSearch|`Spec.Parameters.Backup.TimeOfDay`|12:00:00|
+|ExoscaleOpenSearch|`Spec.Parameters.Maintenance.DayOfWeek`|sunday|
+|ExoscaleOpenSearch|`Spec.Parameters.Maintenance.TimeOfDay`|00:00:00|
+
+VSHN:
+|ServiceKind |Key  | Value  |
+| ------ | -------|-------|
+|VSHNPostgreSQL|`Spec.Parameters.Service.MajorVersion`|15|
+|VSHNPostgreSQL|`Spec.Parameters.Size.CPU`|600m|
+|VSHNPostgreSQL|`Spec.Parameters.Size.Disk`|80Gi|
+|VSHNPostgreSQL|`Spec.Parameters.Size.Memory`|3500Mi|
+|VSHNPostgreSQL|`Spec.Parameters.Size.Requests.CPU`|300m|
+|VSHNPostgreSQL|`Spec.Parameters.Size.Requests.Memory`|1000Mi|
+|VSHNPostgreSQL|`Spec.Parameters.Backup.Schedule`||30 23 * * *|
+|VSHNPostgreSQL|`Spec.Parameters.Backup.Retention`|12|
+|VSHNPostgreSQL|`Spec.Parameters.Scheduling.NodeSelector`|{"appuio.io/node-class": "plus"}|
+|VSHNRedis|`Spec.Parameters.TLS.TLSAuthClients`|true|
+|VSHNRedis|`Spec.Parameters.TLS.TLSEnabled`|true|
+|VSHNRedis|`Spec.Parameters.Service.Version`|7.0|
+|VSHNRedis|`Spec.Parameters.Service.RedisSettings`||activedefrag yes|
+|VSHNRedis|`Spec.Parameters.Size.Disk`|80Gi|
+|VSHNRedis|`Spec.Parameters.Size.CPULimits`|1000m|
+|VSHNRedis|`Spec.Parameters.Size.CPURequests`|500m|
+|VSHNRedis|`Spec.Parameters.Size.MemoryRequests`|500Mi|
+|VSHNRedis|`Spec.Parameters.Size.MemoryLimits`|1Gi|
 
 ## Testing
 
-To test the tool with standart parameters, in the root of the repository run:
+For testing we use unit test as well as golden tests both can be run via:
 ```shell
-go run . "VSHNPostgreSQL" "--spec.parameters.service.majorVersion" "1" "--spec.parameters.size.CPU" "6m" "--spec.parameters.size.disk" "8Gi" "--spec.parameters.size.memory" "35Mi" "--Spec.Parameters.Size.Requests.CPU" "3m" "--spec.parameters.size.requests.memory" "1Mi" "--spec.parameters.backup.schedule" "3 2 * * *" "--spec.parameters.backup.retention" "1"
+go test .
 ```
 
 ## License
