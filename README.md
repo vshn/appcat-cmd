@@ -18,9 +18,10 @@ Out of scope(for now) of this project are:
 
 ### Command Line Arguments
 
-`appcatcli` supports the following command line arguments:
+`appcatcli` supports the following arguments:
 
-- Argument #1: `Name of custom resource type`. Mandatory.
+- Argument #1: `Name of custom resource`. Mandatory.
+- Argument #2: `--kind` with value `ServiceKind`. Mandatory
 - Argument #2...N: `Parameters of custom resource`. Optional.
 
 ## Testing
