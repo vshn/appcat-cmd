@@ -5,6 +5,10 @@ metadata:
   name: redis-default
 spec:
   parameters:
+    backup:
+      retention: {}
+    maintenance: {}
+    restore: {}
     scheduling: {}
     service:
       redisSettings: '|activedefrag yes'

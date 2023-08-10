@@ -12,6 +12,7 @@ spec:
     maintenance: {}
     monitoring: {}
     network: {}
+    replication: {}
     restore: {}
     scheduling:
       nodeSelector:

@@ -5,6 +5,10 @@ metadata:
   name: redis-jsonInput
 spec:
   parameters:
+    backup:
+      retention: {}
+    maintenance: {}
+    restore: {}
     scheduling: {}
     service:
       redisSettings: '| activedefrag no'

@@ -1,7 +1,7 @@
 package defaults
 
 import (
-	exoscalev1 "github.com/vshn/component-appcat/apis/exoscale/v1"
+	exoscalev1 "github.com/vshn/appcat/apis/exoscale/v1"
 )
 
 func (d *Defaults) GetExoscalePostgreSQLDefault() *exoscalev1.ExoscalePostgreSQL {
