@@ -45,7 +45,6 @@ func FormatInputArguments(arguments []string) []string {
 		if isParameterValuePair(argument) {
 			if value != "" {
 				fixedArguments = append(fixedArguments, value)
-				value = ""
 			}
 
 			param, cutValue, _ := strings.Cut(argument, PARAM_VALUE_INFIX)
