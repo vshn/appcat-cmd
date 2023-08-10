@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/sirupsen/logrus v1.9.0
 	github.com/vshn/component-appcat/apis v0.0.0-20230411090651-b0418f5ceb5c
-	golang.org/x/exp v0.0.0-20230809094429-853ea248256d
+	golang.org/x/exp v0.0.0-20230810033253-352e893a4cad
 	k8s.io/apimachinery v0.26.3
 	sigs.k8s.io/yaml v1.3.0
 )
