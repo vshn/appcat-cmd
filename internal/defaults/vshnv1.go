@@ -7,7 +7,7 @@ import (
 func (d *Defaults) GetVSHNPostgreSQLDefault() *vshnv1.VSHNPostgreSQL {
 	var postgreSQLdefault vshnv1.VSHNPostgreSQL
 
-	postgreSQLdefault.Spec.Parameters.Service.MajorVersion = "15"
+	postgreSQLdefault.Spec.Parameters.Service.MajorVersion = "14"
 	postgreSQLdefault.Spec.Parameters.Size.CPU = "600m"
 	postgreSQLdefault.Spec.Parameters.Size.Disk = "80Gi"
 	postgreSQLdefault.Spec.Parameters.Size.Memory = "3500Mi"

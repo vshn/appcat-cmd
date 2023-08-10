@@ -7,7 +7,7 @@ import (
 func (d *Defaults) GetExoscalePostgreSQLDefault() *exoscalev1.ExoscalePostgreSQL {
 	var postgreSQLdefault exoscalev1.ExoscalePostgreSQL
 
-	postgreSQLdefault.Spec.Parameters.Service.MajorVersion = "15"
+	postgreSQLdefault.Spec.Parameters.Service.MajorVersion = "14"
 	postgreSQLdefault.Spec.Parameters.Service.Zone = "ch-dk-2"
 	postgreSQLdefault.Spec.Parameters.Size.Plan = "hobbyist-2"
 	postgreSQLdefault.Spec.Parameters.Backup.TimeOfDay = "12:00:00"

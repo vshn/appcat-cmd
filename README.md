@@ -30,7 +30,7 @@ Global:
 Exoscale:
 |ServiceKind |Key  | Value  |
 | ------ | -------|-------|
-|ExoscalePostgreSQL|`Spec.Parameters.Service.MajorVersion`| 15|
+|ExoscalePostgreSQL|`Spec.Parameters.Service.MajorVersion`| 14|
 |ExoscalePostgreSQL|`Spec.Parameters.Service.Zone`| ch-dk-2|
 |ExoscalePostgreSQL|`Spec.Parameters.Size.Plan`| hobbyist-2|
 |ExoscalePostgreSQL|`Spec.Parameters.Backup.TimeOfDay`| 12:00:00|
@@ -60,7 +60,7 @@ Exoscale:
 VSHN:
 |ServiceKind |Key  | Value  |
 | ------ | -------|-------|
-|VSHNPostgreSQL|`Spec.Parameters.Service.MajorVersion`|15|
+|VSHNPostgreSQL|`Spec.Parameters.Service.MajorVersion`|14|
 |VSHNPostgreSQL|`Spec.Parameters.Size.CPU`|600m|
 |VSHNPostgreSQL|`Spec.Parameters.Size.Disk`|80Gi|
 |VSHNPostgreSQL|`Spec.Parameters.Size.Memory`|3500Mi|
