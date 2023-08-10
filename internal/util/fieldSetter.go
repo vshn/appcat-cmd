@@ -3,6 +3,7 @@ package util
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -64,6 +65,7 @@ func setParameter(serviceType interface{}, input Input) (interface{}, error) {
 		return nil, err
 	}
 	info := fmt.Sprintf("setting field: %s value: %s", strings.Join(input.ParameterHierarchy, HIERARCHY_DELIMITER), input.Value)
+	logrus.SetOutput(os.Stderr)
 	logrus.Info(info)
 
 	return serviceType, nil
