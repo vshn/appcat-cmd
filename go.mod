@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/sirupsen/logrus v1.9.3
-	github.com/vshn/component-appcat/apis v0.0.0-20230517093231-dae78fe889d5
+	github.com/vshn/appcat v0.2.4-0.20230810075854-8ac2bf6e0066
 	golang.org/x/exp v0.0.0-20230810033253-352e893a4cad
 	k8s.io/apimachinery v0.27.4
 	sigs.k8s.io/yaml v1.3.0
@@ -18,7 +18,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.67.1 // indirect
-	github.com/stretchr/testify v1.8.2 // indirect
 	golang.org/x/net v0.14.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect

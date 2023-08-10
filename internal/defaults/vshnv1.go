@@ -1,7 +1,7 @@
 package defaults
 
 import (
-	vshnv1 "github.com/vshn/component-appcat/apis/vshn/v1"
+	vshnv1 "github.com/vshn/appcat/apis/vshn/v1"
 )
 
 func (d *Defaults) GetVSHNPostgreSQLDefault() *vshnv1.VSHNPostgreSQL {

@@ -5,6 +5,10 @@ metadata:
   name: redis-unset
 spec:
   parameters:
+    backup:
+      retention: {}
+    maintenance: {}
+    restore: {}
     scheduling: {}
     service:
       version: "7.0"
