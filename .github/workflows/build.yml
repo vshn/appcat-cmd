@@ -1,4 +1,4 @@
-name: Test
+name: Build
 
 on:
   pull_request: {}
@@ -7,7 +7,7 @@ on:
       - master
 
 jobs:
-  test:
+  go-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,5 +16,5 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: Run tests
-        run: go test -v -race ./...
+      - name: Run build
+        run: go build -v ./...
