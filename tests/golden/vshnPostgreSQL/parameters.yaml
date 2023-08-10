@@ -15,7 +15,7 @@ spec:
       nodeSelector:
         appuio.io/node-class: plus
     service:
-      majorVersion: "15"
+      majorVersion: "14"
       pgSettings: null
     size:
       cpu: 100000m
