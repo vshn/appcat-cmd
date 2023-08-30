@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/sirupsen/logrus v1.9.3
-	github.com/vshn/appcat v0.2.4-0.20230814131531-3980419dfa18
+	github.com/vshn/appcat/v4 v4.22.1
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
 	k8s.io/apimachinery v0.27.4
 	sigs.k8s.io/yaml v1.3.0
@@ -14,7 +14,9 @@ require (
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
+	github.com/google/pprof v0.0.0-20221102093814-76f304f74e5e // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.67.1 // indirect
