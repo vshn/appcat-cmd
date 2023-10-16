@@ -30,6 +30,11 @@ func setParameter(serviceType interface{}, input Input) (interface{}, error) {
 	var parameterName string
 	var err error
 	for _, parameterName = range input.ParameterHierarchy {
+		if reflectedServiceType.Kind() == reflect.Ptr {
+			for reflectedServiceType.Kind() == reflect.Ptr {
+				reflectedServiceType = reflect.Indirect(reflectedServiceType)
+			}
+		}
 		if !reflectedServiceType.FieldByName(parameterName).IsValid() {
 
 			parameterName, err = getStringCase(getAllFieldNames(reflectedServiceType), parameterName)
@@ -45,6 +50,7 @@ func setParameter(serviceType interface{}, input Input) (interface{}, error) {
 		}
 
 		reflectedServiceType = reflectedServiceType.FieldByName(parameterName)
+
 	}
 
 	err = SetFields(reflectedServiceType, input)
