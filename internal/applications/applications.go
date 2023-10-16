@@ -12,6 +12,7 @@ import (
 const (
 	ExoscaleApiVersion = "exoscale.appcat.vshn.io/v1"
 	VshnApiVersion     = "vshn.appcat.vshn.io/v1"
+	K8upApiVersion     = "k8up.io/v1"
 )
 
 var (
@@ -31,6 +32,10 @@ var (
 		// VSHN
 		NewApp(VshnApiVersion, "VSHNPostgreSQL"),
 		NewApp(VshnApiVersion, "VSHNRedis"),
+
+		//K8up
+		NewApp(K8upApiVersion, "Backup"),
+		NewApp(K8upApiVersion, "Schedule"),
 	}
 )
 
