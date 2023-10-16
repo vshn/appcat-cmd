@@ -87,14 +87,17 @@ func Main(apps applications.AppMap, args []string, out io.Writer) int {
 		printUsage(args[0], apps)
 		return 1
 	}
-
-	service := app.GetDefault()
+	var service interface{}
+	var defaultInput []util.Input
+	defaultInput = append(defaultInput, util.Input{ParameterHierarchy: []string{"ObjectMeta", "Name"}, Value: resourceName, Unset: false})
+	if strings.Contains(util.NormalizeNames(serviceKind, "VSHN")) || strings.Contains(util.NormalizeNames(serviceKind, "Exoscale")) {
+		defaultInput = append(defaultInput, util.Input{ParameterHierarchy: []string{"Spec", "WriteConnectionSecretToRef", "Name"}, Value: resourceName + "-creds", Unset: false})
+	} else if strings.Contains(util.NormalizeNames(serviceKind, "Backup")) {
+		defaultInput = append(defaultInput, util.Input{ParameterHierarchy: []string{"Spec", "Backend", "RepoPasswordSecretRef", "Name"}, Value: resourceName + "-creds", Unset: false})
+	}
+	service = app.GetDefault(defaultInput)
 	if app.Kind != serviceKind {
 		util.ReplaceServiceKind(parameters, app.Kind)
-	}
-	parameters = append(parameters, util.Input{ParameterHierarchy: []string{"ObjectMeta", "Name"}, Value: resourceName, Unset: false})
-	if strings.Contains(serviceKind, "VSHN") || strings.Contains(serviceKind, "Exoscale") {
-		parameters = append([]util.Input{{ParameterHierarchy: []string{"Spec", "WriteConnectionSecretToRef", "Name"}, Value: resourceName + "-creds", Unset: false}}, parameters...)
 	}
 
 	_, err = util.DecorateType(service, parameters)
