@@ -4,3 +4,4 @@ examples/
 # Goreleaser
 /dist/
 /.github/release-notes.md
+/.vscode
