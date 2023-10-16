@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"sigs.k8s.io/yaml"
@@ -88,8 +89,13 @@ func Main(apps applications.AppMap, args []string, out io.Writer) int {
 	}
 
 	service := app.GetDefault()
+	if app.Kind != serviceKind {
+		util.ReplaceServiceKind(parameters, app.Kind)
+	}
 	parameters = append(parameters, util.Input{ParameterHierarchy: []string{"ObjectMeta", "Name"}, Value: resourceName, Unset: false})
-	parameters = append([]util.Input{{ParameterHierarchy: []string{"Spec", "WriteConnectionSecretToRef", "Name"}, Value: resourceName + "-creds", Unset: false}}, parameters...)
+	if strings.Contains(serviceKind, "VSHN") || strings.Contains(serviceKind, "Exoscale") {
+		parameters = append([]util.Input{{ParameterHierarchy: []string{"Spec", "WriteConnectionSecretToRef", "Name"}, Value: resourceName + "-creds", Unset: false}}, parameters...)
+	}
 
 	_, err = util.DecorateType(service, parameters)
 	if err != nil {

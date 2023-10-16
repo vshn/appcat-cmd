@@ -111,6 +111,18 @@ func FilterServiceKind(input []Input) (string, error) {
 	}
 }
 
+func ReplaceServiceKind(inputs []Input, fixKind string) error {
+	serviceKindIndex := slices.IndexFunc(inputs, func(input Input) bool {
+		return input.ParameterHierarchy[0] == K8S_SERVICE_KIND
+	})
+	if serviceKindIndex == -1 {
+		return fmt.Errorf("ServiceKind is missing, could not be fixed")
+	} else {
+		inputs[serviceKindIndex].Value = fixKind
+		return nil
+	}
+}
+
 // Takes the input arguments and outputs them as separate Input structs
 func mapArgsToInput(args []string) []Input {
 	var inputList []Input
