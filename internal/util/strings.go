@@ -7,6 +7,10 @@ func NormalizeName(input string) string {
 	return strings.ToLower(input)
 }
 
+func NormalizeNames(a string, b string) (string, string) {
+	return strings.ToLower(a), strings.ToLower(b)
+}
+
 // Longest returns the length of the longest string in the input slice
 func Longest(input []string) int {
 	longest := 0
