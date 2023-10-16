@@ -62,8 +62,8 @@ func NewApp(apiversion, kind string) App {
 // "GetDefault" functions are expected to be
 // * named like `Get<Kind>Default`
 // * belong to the `defaults.Defaults` struct
-func (app *App) GetDefault() interface{} {
-	v := (&defaults.Defaults{}).GetDefaultFor(app.Kind)
+func (app *App) GetDefault(input []util.Input) interface{} {
+	v := (&defaults.Defaults{}).GetDefaultFor(app.Kind, input)
 
 	v.Elem().FieldByName("TypeMeta").Set(reflect.ValueOf(app.TypeMeta))
 

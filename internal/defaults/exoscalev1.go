@@ -1,10 +1,11 @@
 package defaults
 
 import (
+	"github.com/vshn/appcat-cli/internal/util"
 	exoscalev1 "github.com/vshn/appcat/v4/apis/exoscale/v1"
 )
 
-func (d *Defaults) GetExoscalePostgreSQLDefault() *exoscalev1.ExoscalePostgreSQL {
+func (d *Defaults) GetExoscalePostgreSQLDefault(input []util.Input) *exoscalev1.ExoscalePostgreSQL {
 	var postgreSQLdefault exoscalev1.ExoscalePostgreSQL
 
 	postgreSQLdefault.Spec.Parameters.Service.MajorVersion = "14"
@@ -14,20 +15,22 @@ func (d *Defaults) GetExoscalePostgreSQLDefault() *exoscalev1.ExoscalePostgreSQL
 	postgreSQLdefault.Spec.Parameters.Maintenance.DayOfWeek = "sunday"
 	postgreSQLdefault.Spec.Parameters.Maintenance.TimeOfDay = "00:00:00"
 
+	util.DecorateType(&postgreSQLdefault, input)
 	return &postgreSQLdefault
 }
 
-func (d *Defaults) GetExoscaleRedisDefault() *exoscalev1.ExoscaleRedis {
+func (d *Defaults) GetExoscaleRedisDefault(input []util.Input) *exoscalev1.ExoscaleRedis {
 	var redisDefault exoscalev1.ExoscaleRedis
 
 	redisDefault.Spec.Parameters.Maintenance.DayOfWeek = "sunday"
 	redisDefault.Spec.Parameters.Maintenance.TimeOfDay = "00:00:00"
 	redisDefault.Spec.Parameters.Service.Zone = "ch-dk-2"
 
+	util.DecorateType(&redisDefault, input)
 	return &redisDefault
 }
 
-func (d *Defaults) GetExoscaleKafkaDefault() *exoscalev1.ExoscaleKafka {
+func (d *Defaults) GetExoscaleKafkaDefault(input []util.Input) *exoscalev1.ExoscaleKafka {
 	var kafkaDefault exoscalev1.ExoscaleKafka
 
 	kafkaDefault.Spec.Parameters.Service.Version = "3.4.0"
@@ -36,10 +39,11 @@ func (d *Defaults) GetExoscaleKafkaDefault() *exoscalev1.ExoscaleKafka {
 	kafkaDefault.Spec.Parameters.Maintenance.DayOfWeek = "sunday"
 	kafkaDefault.Spec.Parameters.Maintenance.TimeOfDay = "00:00:00"
 
+	util.DecorateType(&kafkaDefault, input)
 	return &kafkaDefault
 }
 
-func (d *Defaults) GetExoscaleMySQLDefault() *exoscalev1.ExoscaleMySQL {
+func (d *Defaults) GetExoscaleMySQLDefault(input []util.Input) *exoscalev1.ExoscaleMySQL {
 	var mySQLdefault exoscalev1.ExoscaleMySQL
 
 	mySQLdefault.Spec.Parameters.Service.MajorVersion = "8"
@@ -49,10 +53,11 @@ func (d *Defaults) GetExoscaleMySQLDefault() *exoscalev1.ExoscaleMySQL {
 	mySQLdefault.Spec.Parameters.Maintenance.DayOfWeek = "sunday"
 	mySQLdefault.Spec.Parameters.Maintenance.TimeOfDay = "00:00:00"
 
+	util.DecorateType(&mySQLdefault, input)
 	return &mySQLdefault
 }
 
-func (d *Defaults) GetExoscaleOpenSearchDefault() *exoscalev1.ExoscaleOpenSearch {
+func (d *Defaults) GetExoscaleOpenSearchDefault(input []util.Input) *exoscalev1.ExoscaleOpenSearch {
 	var openSearchDefault exoscalev1.ExoscaleOpenSearch
 
 	openSearchDefault.Spec.Parameters.Service.MajorVersion = "2"
@@ -62,5 +67,6 @@ func (d *Defaults) GetExoscaleOpenSearchDefault() *exoscalev1.ExoscaleOpenSearch
 	openSearchDefault.Spec.Parameters.Maintenance.DayOfWeek = "sunday"
 	openSearchDefault.Spec.Parameters.Maintenance.TimeOfDay = "00:00:00"
 
+	util.DecorateType(&openSearchDefault, input)
 	return &openSearchDefault
 }

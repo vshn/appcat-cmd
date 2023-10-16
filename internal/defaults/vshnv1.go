@@ -1,10 +1,11 @@
 package defaults
 
 import (
+	"github.com/vshn/appcat-cli/internal/util"
 	vshnv1 "github.com/vshn/appcat/v4/apis/vshn/v1"
 )
 
-func (d *Defaults) GetVSHNPostgreSQLDefault() *vshnv1.VSHNPostgreSQL {
+func (d *Defaults) GetVSHNPostgreSQLDefault(input []util.Input) *vshnv1.VSHNPostgreSQL {
 	var postgreSQLdefault vshnv1.VSHNPostgreSQL
 
 	postgreSQLdefault.Spec.Parameters.Service.MajorVersion = "14"
@@ -17,10 +18,11 @@ func (d *Defaults) GetVSHNPostgreSQLDefault() *vshnv1.VSHNPostgreSQL {
 	postgreSQLdefault.Spec.Parameters.Backup.Retention = 12
 	postgreSQLdefault.Spec.Parameters.Scheduling.NodeSelector = map[string]string{"appuio.io/node-class": "plus"}
 
+	util.DecorateType(&postgreSQLdefault, input)
 	return &postgreSQLdefault
 }
 
-func (d *Defaults) GetVSHNRedisDefault() *vshnv1.VSHNRedis {
+func (d *Defaults) GetVSHNRedisDefault(input []util.Input) *vshnv1.VSHNRedis {
 	var redisDefault vshnv1.VSHNRedis
 
 	redisDefault.Spec.Parameters.TLS.TLSAuthClients = true
@@ -33,5 +35,6 @@ func (d *Defaults) GetVSHNRedisDefault() *vshnv1.VSHNRedis {
 	redisDefault.Spec.Parameters.Size.MemoryRequests = "500Mi"
 	redisDefault.Spec.Parameters.Size.MemoryLimits = "1Gi"
 
+	util.DecorateType(&redisDefault, input)
 	return &redisDefault
 }
