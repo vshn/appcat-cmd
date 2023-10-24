@@ -7,7 +7,7 @@ require (
 	github.com/vshn/appcat/v4 v4.22.1
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d
 	k8s.io/apimachinery v0.27.4
-	sigs.k8s.io/yaml v1.3.0
+	sigs.k8s.io/yaml v1.4.0
 )
 
 require (
